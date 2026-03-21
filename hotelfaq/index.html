@@ -3,242 +3,734 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ICTL FAQ ビューア</title>
+<title>Hotel FAQ一覧</title>
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: 'Segoe UI', 'Yu Gothic UI', 'Meiryo', sans-serif; background: #f5f5f5; color: #333; }
-
-.header {
-    background: linear-gradient(135deg, #1a237e, #283593);
-    color: white; padding: 20px 30px;
-    position: sticky; top: 0; z-index: 100;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-}
-.header h1 { font-size: 1.4em; margin-bottom: 8px; }
-.stats { font-size: 0.85em; opacity: 0.9; margin-bottom: 12px; }
-.stats span { background: rgba(255,255,255,0.2); padding: 2px 10px; border-radius: 12px; margin-right: 8px; }
-
-.controls { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
-.search-box {
-    flex: 1; min-width: 250px; padding: 8px 14px;
-    border: none; border-radius: 6px; font-size: 0.95em;
-    background: rgba(255,255,255,0.95);
-}
-.filter-btn {
-    padding: 6px 16px; border: 2px solid rgba(255,255,255,0.5);
-    background: transparent; color: white; border-radius: 20px;
-    cursor: pointer; font-size: 0.85em; transition: all 0.2s;
-}
-.filter-btn:hover, .filter-btn.active {
-    background: white; color: #1a237e; border-color: white;
-}
-
-.container { display: flex; height: calc(100vh - 130px); }
-
-.sidebar {
-    width: 340px; min-width: 340px;
-    background: white; overflow-y: auto;
-    border-right: 1px solid #ddd;
-    padding: 10px 0;
-}
-.sidebar-section { padding: 8px 16px; font-size: 0.75em; color: #888; text-transform: uppercase; font-weight: 600; }
-.cat-item {
-    padding: 10px 16px; cursor: pointer;
-    border-left: 3px solid transparent;
-    transition: all 0.15s; display: flex; justify-content: space-between; align-items: center;
-}
-.cat-item:hover { background: #f0f0f0; }
-.cat-item.active { background: #e8eaf6; border-left-color: #1a237e; font-weight: 600; }
-.cat-item .cat-name { font-size: 0.9em; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.cat-item .cat-count {
-    background: #e0e0e0; color: #555; padding: 1px 8px;
-    border-radius: 10px; font-size: 0.75em; margin-left: 8px; flex-shrink: 0;
-}
-.cat-item.active .cat-count { background: #1a237e; color: white; }
-.cat-item.hidden { display: none; }
-
-.main-content {
-    flex: 1; overflow-y: auto; padding: 20px 30px;
-}
-.faq-header { margin-bottom: 20px; }
-.faq-header h2 { font-size: 1.2em; color: #1a237e; }
-.faq-header .faq-meta { font-size: 0.85em; color: #888; margin-top: 4px; }
-
-.faq-card {
-    background: white; border-radius: 8px; padding: 16px 20px;
-    margin-bottom: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-    border-left: 4px solid #c5cae9; transition: all 0.2s;
-}
-.faq-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.12); border-left-color: #1a237e; }
-.faq-card.hidden { display: none; }
-.faq-code { font-size: 0.75em; color: #999; margin-bottom: 6px; font-family: monospace; }
-.faq-question { font-weight: 600; color: #1a237e; margin-bottom: 8px; font-size: 0.95em; }
-.faq-answer { color: #555; font-size: 0.9em; line-height: 1.6; padding-left: 12px; border-left: 2px solid #e0e0e0; }
-.faq-question mark, .faq-answer mark { background: #fff176; padding: 0 2px; border-radius: 2px; }
-
-.empty-state { text-align: center; padding: 60px 20px; color: #999; }
-.empty-state .icon { font-size: 3em; margin-bottom: 16px; }
-
-.all-view { padding: 20px 30px; }
-.all-view .category-group { margin-bottom: 30px; }
-.all-view .category-group h3 {
-    font-size: 1.1em; color: #1a237e; padding: 10px 0;
-    border-bottom: 2px solid #c5cae9; margin-bottom: 12px;
-}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI','Yu Gothic UI','Meiryo',sans-serif;background:#f5f5f5;color:#333}
+.header{background:linear-gradient(135deg,#1a237e,#283593);color:#fff;padding:20px 30px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.header h1{font-size:1.3em;margin-bottom:8px}
+.stats{font-size:.85em;opacity:.9;margin-bottom:12px}
+.stats span{background:rgba(255,255,255,.2);padding:2px 10px;border-radius:12px;margin-right:8px}
+.search-box{width:100%;max-width:500px;padding:8px 14px;border:none;border-radius:6px;font-size:.95em;background:rgba(255,255,255,.95)}
+.content{max-width:900px;margin:0 auto;padding:20px}
+.faq-card{background:#fff;border-radius:8px;padding:16px 20px;margin-bottom:10px;box-shadow:0 1px 3px rgba(0,0,0,.08);border-left:4px solid #c5cae9;transition:all .2s}
+.faq-card:hover{box-shadow:0 2px 8px rgba(0,0,0,.12);border-left-color:#1a237e}
+.faq-card.hidden{display:none}
+.faq-num{font-size:.7em;color:#999;font-family:monospace;margin-bottom:4px}
+.faq-question{font-weight:600;color:#1a237e;margin-bottom:8px;font-size:.95em}
+.faq-answer{color:#555;font-size:.9em;line-height:1.6;padding-left:12px;border-left:2px solid #e0e0e0}
+.faq-cat{font-size:.7em;color:#888;margin-top:6px;text-align:right}
+.faq-question mark,.faq-answer mark{background:#fff176;padding:0 2px;border-radius:2px}
+.match-count{font-size:.85em;opacity:.9;margin-top:8px}
 </style>
 </head>
 <body>
-
 <div class="header">
-    <h1>ICTL FAQ ビューア — ホテルコンシェルジュ</h1>
-    <div class="stats">
-        <span>全 20,512 件</span>
-        <span>ベース 72 件 / 12 カテゴリ</span>
-        <span>学習拡張 20,440 件 / 1022 カテゴリ</span>
-    </div>
-    <div class="controls">
-        <input class="search-box" type="text" placeholder="FAQ検索（質問・回答のキーワード）..." id="searchBox">
-        <button class="filter-btn active" data-filter="all" onclick="setFilter('all')">すべて</button>
-        <button class="filter-btn" data-filter="base" onclick="setFilter('base')">ベースのみ</button>
-        <button class="filter-btn" data-filter="learn" onclick="setFilter('learn')">学習拡張のみ</button>
-    </div>
+  <h1>Hotel AIコンシェルジュ — FAQ一覧</h1>
+  <div class="stats"><span>全 114 件</span></div>
+  <input class="search-box" type="text" placeholder="FAQ検索（質問・回答のキーワード）..." id="searchBox" oninput="filterFaq()">
+  <div class="match-count" id="matchCount"></div>
+</div>
+<div class="content" id="faqList">
+<div class="faq-card" data-q="ご家族連れのお客様におすすめのサービスはありますか？" data-a="ご家族連れのお客様には、館内案内、周辺情報、貸出備品、レストラン予約などを組み合わせたご提案が可能でございます。">
+  <div class="faq-num">Q1</div>
+  <div class="faq-question">ご家族連れのお客様におすすめのサービスはありますか？</div>
+  <div class="faq-answer">ご家族連れのお客様には、館内案内、周辺情報、貸出備品、レストラン予約などを組み合わせたご提案が可能でございます。</div>
+  <div class="faq-cat">サービス</div>
+</div>
+<div class="faq-card" data-q="ご家族連れのお客様向けに便利な案内はありますか？" data-a="ご家族連れのお客様には、用途に応じた館内サービス、周辺アクセス、食事案内をまとめてご案内しております。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q2</div>
+  <div class="faq-question">ご家族連れのお客様向けに便利な案内はありますか？</div>
+  <div class="faq-answer">ご家族連れのお客様には、用途に応じた館内サービス、周辺アクセス、食事案内をまとめてご案内しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">サービス</div>
+</div>
+<div class="faq-card" data-q="ビジネス利用のお客様におすすめのサービスはありますか？" data-a="ビジネス利用のお客様には、館内案内、周辺情報、貸出備品、レストラン予約などを組み合わせたご提案が可能でございます。">
+  <div class="faq-num">Q3</div>
+  <div class="faq-question">ビジネス利用のお客様におすすめのサービスはありますか？</div>
+  <div class="faq-answer">ビジネス利用のお客様には、館内案内、周辺情報、貸出備品、レストラン予約などを組み合わせたご提案が可能でございます。</div>
+  <div class="faq-cat">サービス</div>
+</div>
+<div class="faq-card" data-q="ビジネス利用のお客様向けに便利な案内はありますか？" data-a="ビジネス利用のお客様には、用途に応じた館内サービス、周辺アクセス、食事案内をまとめてご案内しております。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q4</div>
+  <div class="faq-question">ビジネス利用のお客様向けに便利な案内はありますか？</div>
+  <div class="faq-answer">ビジネス利用のお客様には、用途に応じた館内サービス、周辺アクセス、食事案内をまとめてご案内しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">サービス</div>
+</div>
+<div class="faq-card" data-q="プロジェクターは借りられますか？" data-a="はい、有料オプションとしてプロジェクター、スクリーン、マイクをご用意しております。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q5</div>
+  <div class="faq-question">プロジェクターは借りられますか？</div>
+  <div class="faq-answer">はい、有料オプションとしてプロジェクター、スクリーン、マイクをご用意しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">サービス</div>
+</div>
+<div class="faq-card" data-q="海外からのお客様向けに便利な案内はありますか？" data-a="海外からのお客様には、用途に応じた館内サービス、周辺アクセス、食事案内をまとめてご案内しております。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q6</div>
+  <div class="faq-question">海外からのお客様向けに便利な案内はありますか？</div>
+  <div class="faq-answer">海外からのお客様には、用途に応じた館内サービス、周辺アクセス、食事案内をまとめてご案内しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">サービス</div>
+</div>
+<div class="faq-card" data-q="研修利用の昼食手配はできますか？" data-a="はい、ご予算に応じてお弁当または宴会場での食事手配が可能でございます。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q7</div>
+  <div class="faq-question">研修利用の昼食手配はできますか？</div>
+  <div class="faq-answer">はい、ご予算に応じてお弁当または宴会場での食事手配が可能でございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">サービス</div>
+</div>
+<div class="faq-card" data-q="記念日利用のお客様向けに便利な案内はありますか？" data-a="記念日利用のお客様には、用途に応じた館内サービス、周辺アクセス、食事案内をまとめてご案内しております。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q8</div>
+  <div class="faq-question">記念日利用のお客様向けに便利な案内はありますか？</div>
+  <div class="faq-answer">記念日利用のお客様には、用途に応じた館内サービス、周辺アクセス、食事案内をまとめてご案内しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">サービス</div>
+</div>
+<div class="faq-card" data-q="セルフチェックイン機は使えますか" data-a="はい、1階ロビーのaiチェックインkioskをご利用いただけます。ご予約名または予約番号、本人確認書類をご準備ください。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q9</div>
+  <div class="faq-question">セルフチェックイン機は使えますか</div>
+  <div class="faq-answer">はい、1階ロビーのAIチェックインKioskをご利用いただけます。ご予約名または予約番号、本人確認書類をご準備ください。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">チェックイン・チェックアウト</div>
+</div>
+<div class="faq-card" data-q="チェックアウトは何時までですか" data-a="通常のチェックアウト時刻は11:00でございます。正午以降のご利用は追加料金が発生する場合がございます。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q10</div>
+  <div class="faq-question">チェックアウトは何時までですか</div>
+  <div class="faq-answer">通常のチェックアウト時刻は11:00でございます。正午以降のご利用は追加料金が発生する場合がございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">チェックイン・チェックアウト</div>
+</div>
+<div class="faq-card" data-q="チェックインは何時からできますか" data-a="通常のチェックイン開始時刻は15:00でございます。ご到着が早い場合は、お部屋の準備状況によりアーリーチェックインをご案内いたします。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q11</div>
+  <div class="faq-question">チェックインは何時からできますか</div>
+  <div class="faq-answer">通常のチェックイン開始時刻は15:00でございます。ご到着が早い場合は、お部屋の準備状況によりアーリーチェックインをご案内いたします。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">チェックイン・チェックアウト</div>
+</div>
+<div class="faq-card" data-q="チェックイン前に荷物を預けられますか？" data-a="はい、当日朝からフロントまたはベルデスクでお預かりいたします。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q12</div>
+  <div class="faq-question">チェックイン前に荷物を預けられますか？</div>
+  <div class="faq-answer">はい、当日朝からフロントまたはベルデスクでお預かりいたします。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">チェックイン・チェックアウト</div>
+</div>
+<div class="faq-card" data-q="有人フロントでの手続きも可能ですか" data-a="はい、フロントカウンターでもお手続きいただけます。混雑時はkioskのご利用がスムーズです。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q13</div>
+  <div class="faq-question">有人フロントでの手続きも可能ですか</div>
+  <div class="faq-answer">はい、フロントカウンターでもお手続きいただけます。混雑時はKioskのご利用がスムーズです。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">チェックイン・チェックアウト</div>
+</div>
+<div class="faq-card" data-q="体調が悪いのですが。" data-a="必要に応じて救急相談窓口や近隣医療機関をご案内いたします。緊急性が高い場合はすぐにスタッフへお知らせください。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q14</div>
+  <div class="faq-question">体調が悪いのですが。</div>
+  <div class="faq-answer">必要に応じて救急相談窓口や近隣医療機関をご案内いたします。緊急性が高い場合はすぐにスタッフへお知らせください。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">トラブル・緊急対応</div>
+</div>
+<div class="faq-card" data-q="忘れ物をした場合はどうなりますか？" data-a="発見されたお忘れ物は一定期間保管しております。お心当たりの品がございましたら、宿泊日とお部屋番号を添えてお問い合わせください。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q15</div>
+  <div class="faq-question">忘れ物をした場合はどうなりますか？</div>
+  <div class="faq-answer">発見されたお忘れ物は一定期間保管しております。お心当たりの品がございましたら、宿泊日とお部屋番号を添えてお問い合わせください。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">トラブル・緊急対応</div>
+</div>
+<div class="faq-card" data-q="部屋の設備が故障しています。" data-a="ご不便をおかけし申し訳ございません。状況を確認のうえ、客室移動または修理対応を手配いたします。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q16</div>
+  <div class="faq-question">部屋の設備が故障しています。</div>
+  <div class="faq-answer">ご不便をおかけし申し訳ございません。状況を確認のうえ、客室移動または修理対応を手配いたします。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">トラブル・緊急対応</div>
+</div>
+<div class="faq-card" data-q="アレルギー対応は可能ですか？" data-a="可能な範囲で対応いたします。重篤なアレルギーをお持ちの場合は、事前に詳細をお知らせください。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q17</div>
+  <div class="faq-question">アレルギー対応は可能ですか？</div>
+  <div class="faq-answer">可能な範囲で対応いたします。重篤なアレルギーをお持ちの場合は、事前に詳細をお知らせください。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">一般</div>
+</div>
+<div class="faq-card" data-q="カードキーをなくしました。" data-a="防犯のため既存キーを無効化し、新しいカードキーを再発行いたします。本人確認にご協力ください。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q18</div>
+  <div class="faq-question">カードキーをなくしました。</div>
+  <div class="faq-answer">防犯のため既存キーを無効化し、新しいカードキーを再発行いたします。本人確認にご協力ください。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">一般</div>
+</div>
+<div class="faq-card" data-q="サウナはありますか？" data-a="はい、15階大浴場エリアにドライサウナをご用意しております。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q19</div>
+  <div class="faq-question">サウナはありますか？</div>
+  <div class="faq-answer">はい、15階大浴場エリアにドライサウナをご用意しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">一般</div>
+</div>
+<div class="faq-card" data-q="パスポートの提示は必要ですか？" data-a="海外からお越しで日本国内に住所をお持ちでないお客様には、法令に基づきパスポートの確認をお願いしております。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q20</div>
+  <div class="faq-question">パスポートの提示は必要ですか？</div>
+  <div class="faq-answer">海外からお越しで日本国内に住所をお持ちでないお客様には、法令に基づきパスポートの確認をお願いしております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">一般</div>
+</div>
+<div class="faq-card" data-q="冷蔵品や冷凍品の預かりはできますか？" data-a="衛生管理上、お預かりできない品目がございます。事前にフロントへご相談ください。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q21</div>
+  <div class="faq-question">冷蔵品や冷凍品の預かりはできますか？</div>
+  <div class="faq-answer">衛生管理上、お預かりできない品目がございます。事前にフロントへご相談ください。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">一般</div>
+</div>
+<div class="faq-card" data-q="変換プラグは借りられますか？" data-a="はい、数に限りはございますが、各種変換プラグを無料で貸出しております。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q22</div>
+  <div class="faq-question">変換プラグは借りられますか？</div>
+  <div class="faq-answer">はい、数に限りはございますが、各種変換プラグを無料で貸出しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">一般</div>
+</div>
+<div class="faq-card" data-q="外貨両替はできますか？" data-a="館内では外貨両替を承っておりませんが、近隣の両替機または銀行をご案内いたします。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q23</div>
+  <div class="faq-question">外貨両替はできますか？</div>
+  <div class="faq-answer">館内では外貨両替を承っておりませんが、近隣の両替機または銀行をご案内いたします。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">一般</div>
+</div>
+<div class="faq-card" data-q="朝食会場はどこですか？" data-a="朝食会場は2階『レストランnbs』でございます。時間帯により混雑いたしますので、余裕をもってご利用ください。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q24</div>
+  <div class="faq-question">朝食会場はどこですか？</div>
+  <div class="faq-answer">朝食会場は2階『レストランNBS』でございます。時間帯により混雑いたしますので、余裕をもってご利用ください。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">一般</div>
+</div>
+<div class="faq-card" data-q="添い寝は可能ですか？" data-a="未就学のお子様はベッド1台につき1名まで添い寝無料でご案内しております。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q25</div>
+  <div class="faq-question">添い寝は可能ですか？</div>
+  <div class="faq-answer">未就学のお子様はベッド1台につき1名まで添い寝無料でご案内しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">一般</div>
+</div>
+<div class="faq-card" data-q="火災報知器が鳴ったらどうすればいいですか" data-a="館内放送とスタッフの案内に従い、非常口から落ち着いて避難してください。エレベーターは使用しないでください。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q26</div>
+  <div class="faq-question">火災報知器が鳴ったらどうすればいいですか</div>
+  <div class="faq-answer">館内放送とスタッフの案内に従い、非常口から落ち着いて避難してください。エレベーターは使用しないでください。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">一般</div>
+</div>
+<div class="faq-card" data-q="ホテルから荷物を送れますか？" data-a="はい、国内配送の宅配便を1階ベルデスクで承っております。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q27</div>
+  <div class="faq-question">ホテルから荷物を送れますか？</div>
+  <div class="faq-answer">はい、国内配送の宅配便を1階ベルデスクで承っております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">予約・宿泊</div>
+</div>
+<div class="faq-card" data-q="長期滞在のお客様向けに便利な案内はありますか？" data-a="長期滞在のお客様には、用途に応じた館内サービス、周辺アクセス、食事案内をまとめてご案内しております。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q28</div>
+  <div class="faq-question">長期滞在のお客様向けに便利な案内はありますか？</div>
+  <div class="faq-answer">長期滞在のお客様には、用途に応じた館内サービス、周辺アクセス、食事案内をまとめてご案内しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">予約・宿泊</div>
+</div>
+<div class="faq-card" data-q="中国語での案内資料はありますか？" data-a="中国語版の館内案内や避難案内を順次ご用意しております。必要な場合はスタッフへお申し付けください。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q29</div>
+  <div class="faq-question">中国語での案内資料はありますか？</div>
+  <div class="faq-answer">中国語版の館内案内や避難案内を順次ご用意しております。必要な場合はスタッフへお申し付けください。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">周辺観光</div>
+</div>
+<div class="faq-card" data-q="日本語での案内資料はありますか？" data-a="日本語版の館内案内や避難案内を順次ご用意しております。必要な場合はスタッフへお申し付けください。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q30</div>
+  <div class="faq-question">日本語での案内資料はありますか？</div>
+  <div class="faq-answer">日本語版の館内案内や避難案内を順次ご用意しております。必要な場合はスタッフへお申し付けください。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">周辺観光</div>
+</div>
+<div class="faq-card" data-q="英語での案内資料はありますか？" data-a="英語版の館内案内や避難案内を順次ご用意しております。必要な場合はスタッフへお申し付けください。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q31</div>
+  <div class="faq-question">英語での案内資料はありますか？</div>
+  <div class="faq-answer">英語版の館内案内や避難案内を順次ご用意しております。必要な場合はスタッフへお申し付けください。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">周辺観光</div>
+</div>
+<div class="faq-card" data-q="英語で対応できますか？" data-a="はい、日本語・英語でのご案内が可能でございます。時間帯により対応可能スタッフが異なる場合がございます。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q32</div>
+  <div class="faq-question">英語で対応できますか？</div>
+  <div class="faq-answer">はい、日本語・英語でのご案内が可能でございます。時間帯により対応可能スタッフが異なる場合がございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">周辺観光</div>
+</div>
+<div class="faq-card" data-q="韓国語での案内資料はありますか？" data-a="韓国語版の館内案内や避難案内を順次ご用意しております。必要な場合はスタッフへお申し付けください。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q33</div>
+  <div class="faq-question">韓国語での案内資料はありますか？</div>
+  <div class="faq-answer">韓国語版の館内案内や避難案内を順次ご用意しております。必要な場合はスタッフへお申し付けください。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">周辺観光</div>
+</div>
+<div class="faq-card" data-q="キッズルームはありますか？" data-a="はい、6階にご宿泊者専用キッズルームがございます。保護者同伴でご利用ください。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q34</div>
+  <div class="faq-question">キッズルームはありますか？</div>
+  <div class="faq-answer">はい、6階にご宿泊者専用キッズルームがございます。保護者同伴でご利用ください。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">客室・設備</div>
+</div>
+<div class="faq-card" data-q="キッズルームは何階ですか？" data-a="キッズルームは6階にございます。営業時間は9:00から20:00でございます。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q35</div>
+  <div class="faq-question">キッズルームは何階ですか？</div>
+  <div class="faq-answer">キッズルームは6階にございます。営業時間は9:00から20:00でございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">客室・設備</div>
+</div>
+<div class="faq-card" data-q="クラブフロアキングで利用できるアメニティを教えてください。" data-a="クラブフロアキングでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q36</div>
+  <div class="faq-question">クラブフロアキングで利用できるアメニティを教えてください。</div>
+  <div class="faq-answer">クラブフロアキングでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">客室・設備</div>
+</div>
+<div class="faq-card" data-q="コネクティングルームで利用できるアメニティを教えてください。" data-a="コネクティングルームでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q37</div>
+  <div class="faq-question">コネクティングルームで利用できるアメニティを教えてください。</div>
+  <div class="faq-answer">コネクティングルームでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">客室・設備</div>
+</div>
+<div class="faq-card" data-q="コネクティングルームの特徴を教えてください。" data-a="コネクティングルームは快適性と機能性を両立した客室タイプで、用途に応じた設備とアメニティをご利用いただけます。">
+  <div class="faq-num">Q38</div>
+  <div class="faq-question">コネクティングルームの特徴を教えてください。</div>
+  <div class="faq-answer">コネクティングルームは快適性と機能性を両立した客室タイプで、用途に応じた設備とアメニティをご利用いただけます。</div>
+  <div class="faq-cat">客室・設備</div>
+</div>
+<div class="faq-card" data-q="スタンダードシングルで利用できるアメニティを教えてください。" data-a="スタンダードシングルでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q39</div>
+  <div class="faq-question">スタンダードシングルで利用できるアメニティを教えてください。</div>
+  <div class="faq-answer">スタンダードシングルでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">客室・設備</div>
+</div>
+<div class="faq-card" data-q="スタンダードツインで利用できるアメニティを教えてください。" data-a="スタンダードツインでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q40</div>
+  <div class="faq-question">スタンダードツインで利用できるアメニティを教えてください。</div>
+  <div class="faq-answer">スタンダードツインでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">客室・設備</div>
+</div>
+<div class="faq-card" data-q="スタンダードツインの特徴を教えてください。" data-a="スタンダードツインは快適性と機能性を両立した客室タイプで、用途に応じた設備とアメニティをご利用いただけます。">
+  <div class="faq-num">Q41</div>
+  <div class="faq-question">スタンダードツインの特徴を教えてください。</div>
+  <div class="faq-answer">スタンダードツインは快適性と機能性を両立した客室タイプで、用途に応じた設備とアメニティをご利用いただけます。</div>
+  <div class="faq-cat">客室・設備</div>
+</div>
+<div class="faq-card" data-q="スーペリアダブルで利用できるアメニティを教えてください。" data-a="スーペリアダブルでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q42</div>
+  <div class="faq-question">スーペリアダブルで利用できるアメニティを教えてください。</div>
+  <div class="faq-answer">スーペリアダブルでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">客室・設備</div>
+</div>
+<div class="faq-card" data-q="スーペリアダブルの特徴を教えてください。" data-a="スーペリアダブルは快適性と機能性を両立した客室タイプで、用途に応じた設備とアメニティをご利用いただけます。">
+  <div class="faq-num">Q43</div>
+  <div class="faq-question">スーペリアダブルの特徴を教えてください。</div>
+  <div class="faq-answer">スーペリアダブルは快適性と機能性を両立した客室タイプで、用途に応じた設備とアメニティをご利用いただけます。</div>
+  <div class="faq-cat">客室・設備</div>
+</div>
+<div class="faq-card" data-q="デラックスツインで利用できるアメニティを教えてください。" data-a="デラックスツインでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q44</div>
+  <div class="faq-question">デラックスツインで利用できるアメニティを教えてください。</div>
+  <div class="faq-answer">デラックスツインでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">客室・設備</div>
+</div>
+<div class="faq-card" data-q="ビューバススイートで利用できるアメニティを教えてください。" data-a="ビューバススイートでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q45</div>
+  <div class="faq-question">ビューバススイートで利用できるアメニティを教えてください。</div>
+  <div class="faq-answer">ビューバススイートでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">客室・設備</div>
+</div>
+<div class="faq-card" data-q="ビューバススイートの特徴を教えてください。" data-a="ビューバススイートは快適性と機能性を両立した客室タイプで、用途に応じた設備とアメニティをご利用いただけます。">
+  <div class="faq-num">Q46</div>
+  <div class="faq-question">ビューバススイートの特徴を教えてください。</div>
+  <div class="faq-answer">ビューバススイートは快適性と機能性を両立した客室タイプで、用途に応じた設備とアメニティをご利用いただけます。</div>
+  <div class="faq-cat">客室・設備</div>
+</div>
+<div class="faq-card" data-q="ファミリースイートで利用できるアメニティを教えてください。" data-a="ファミリースイートでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q47</div>
+  <div class="faq-question">ファミリースイートで利用できるアメニティを教えてください。</div>
+  <div class="faq-answer">ファミリースイートでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">客室・設備</div>
+</div>
+<div class="faq-card" data-q="プレミアキングで利用できるアメニティを教えてください。" data-a="プレミアキングでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q48</div>
+  <div class="faq-question">プレミアキングで利用できるアメニティを教えてください。</div>
+  <div class="faq-answer">プレミアキングでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">客室・設備</div>
+</div>
+<div class="faq-card" data-q="ベッドを追加できますか？" data-a="一部の客室タイプではエキストラベッドの追加が可能でございます。客室タイプと宿泊人数により可否が異なります。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q49</div>
+  <div class="faq-question">ベッドを追加できますか？</div>
+  <div class="faq-answer">一部の客室タイプではエキストラベッドの追加が可能でございます。客室タイプと宿泊人数により可否が異なります。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">客室・設備</div>
+</div>
+<div class="faq-card" data-q="ベビーベッドは借りられますか？" data-a="対象年齢内のお子様向けに無料で貸出しております。台数に限りがあるため事前予約をおすすめいたします。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q50</div>
+  <div class="faq-question">ベビーベッドは借りられますか？</div>
+  <div class="faq-answer">対象年齢内のお子様向けに無料で貸出しております。台数に限りがあるため事前予約をおすすめいたします。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">客室・設備</div>
+</div>
+<div class="faq-card" data-q="ユニバーサルルームで利用できるアメニティを教えてください。" data-a="ユニバーサルルームでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q51</div>
+  <div class="faq-question">ユニバーサルルームで利用できるアメニティを教えてください。</div>
+  <div class="faq-answer">ユニバーサルルームでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">客室・設備</div>
+</div>
+<div class="faq-card" data-q="ルームサービスはありますか？" data-a="はい、17:00から22:00まで一部メニューにてルームサービスをご利用いただけます。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q52</div>
+  <div class="faq-question">ルームサービスはありますか？</div>
+  <div class="faq-answer">はい、17:00から22:00まで一部メニューにてルームサービスをご利用いただけます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">客室・設備</div>
+</div>
+<div class="faq-card" data-q="加湿空気清浄機はありますか？" data-a="数に限りはございますが、貸出備品としてご用意しております。フロントまたはkioskのリクエストメニューからお申し付けください。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q53</div>
+  <div class="faq-question">加湿空気清浄機はありますか？</div>
+  <div class="faq-answer">数に限りはございますが、貸出備品としてご用意しております。フロントまたはKioskのリクエストメニューからお申し付けください。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">客室・設備</div>
+</div>
+<div class="faq-card" data-q="和洋室スイートで利用できるアメニティを教えてください。" data-a="和洋室スイートでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q54</div>
+  <div class="faq-question">和洋室スイートで利用できるアメニティを教えてください。</div>
+  <div class="faq-answer">和洋室スイートでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">客室・設備</div>
+</div>
+<div class="faq-card" data-q="喫煙ルームはありますか？" data-a="ホテルnbsの客室は全室禁煙でございます。喫煙は1階屋外の喫煙スペースをご利用ください。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q55</div>
+  <div class="faq-question">喫煙ルームはありますか？</div>
+  <div class="faq-answer">ホテルNBSの客室は全室禁煙でございます。喫煙は1階屋外の喫煙スペースをご利用ください。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">客室・設備</div>
+</div>
+<div class="faq-card" data-q="子ども用アメニティはありますか？" data-a="はい、歯ブラシ、スリッパ、ボディスポンジなどのお子様向けアメニティをご用意しております。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q56</div>
+  <div class="faq-question">子ども用アメニティはありますか？</div>
+  <div class="faq-answer">はい、歯ブラシ、スリッパ、ボディスポンジなどのお子様向けアメニティをご用意しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">客室・設備</div>
+</div>
+<div class="faq-card" data-q="客室でwi-fiは使えますか？" data-a="はい、全客室および館内共用部で無料wi-fiをご利用いただけます。ssidとパスワードは客室内の案内をご確認ください。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q57</div>
+  <div class="faq-question">客室でWi-Fiは使えますか？</div>
+  <div class="faq-answer">はい、全客室および館内共用部で無料Wi-Fiをご利用いただけます。SSIDとパスワードは客室内の案内をご確認ください。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">客室・設備</div>
+</div>
+<div class="faq-card" data-q="長期滞在レジデンスで利用できるアメニティを教えてください。" data-a="長期滞在レジデンスでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q58</div>
+  <div class="faq-question">長期滞在レジデンスで利用できるアメニティを教えてください。</div>
+  <div class="faq-answer">長期滞在レジデンスでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">客室・設備</div>
+</div>
+<div class="faq-card" data-q="qrコード決済で追加精算できますか？" data-a="はい、追加のご利用分はqrコード決済でご精算いただけます。決済端末の仕様により一部制限がある場合がございます。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q59</div>
+  <div class="faq-question">QRコード決済で追加精算できますか？</div>
+  <div class="faq-answer">はい、追加のご利用分はQRコード決済でご精算いただけます。決済端末の仕様により一部制限がある場合がございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">支払い・領収書</div>
+</div>
+<div class="faq-card" data-q="どの支払い方法が使えますか" data-a="現金、主要クレジットカード、交通系ic、各種qrコード決済に対応しております。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q60</div>
+  <div class="faq-question">どの支払い方法が使えますか</div>
+  <div class="faq-answer">現金、主要クレジットカード、交通系IC、各種QRコード決済に対応しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">支払い・領収書</div>
+</div>
+<div class="faq-card" data-q="クレジットカードで追加精算できますか？" data-a="はい、追加のご利用分はクレジットカードでご精算いただけます。決済端末の仕様により一部制限がある場合がございます。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q61</div>
+  <div class="faq-question">クレジットカードで追加精算できますか？</div>
+  <div class="faq-answer">はい、追加のご利用分はクレジットカードでご精算いただけます。決済端末の仕様により一部制限がある場合がございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">支払い・領収書</div>
+</div>
+<div class="faq-card" data-q="デポジットは必要ですか" data-a="ご予約内容やお支払い方法により、ご到着時にデポジットをお願いする場合がございます。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q62</div>
+  <div class="faq-question">デポジットは必要ですか</div>
+  <div class="faq-answer">ご予約内容やお支払い方法により、ご到着時にデポジットをお願いする場合がございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">支払い・領収書</div>
+</div>
+<div class="faq-card" data-q="事前決済済みですが追加料金だけ現地で払えますか" data-a="はい、追加ご利用分のみ現地精算いただけます。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q63</div>
+  <div class="faq-question">事前決済済みですが追加料金だけ現地で払えますか</div>
+  <div class="faq-answer">はい、追加ご利用分のみ現地精算いただけます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">支払い・領収書</div>
+</div>
+<div class="faq-card" data-q="交通系icで追加精算できますか？" data-a="はい、追加のご利用分は交通系icでご精算いただけます。決済端末の仕様により一部制限がある場合がございます。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q64</div>
+  <div class="faq-question">交通系ICで追加精算できますか？</div>
+  <div class="faq-answer">はい、追加のご利用分は交通系ICでご精算いただけます。決済端末の仕様により一部制限がある場合がございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">支払い・領収書</div>
+</div>
+<div class="faq-card" data-q="会社名義の領収書は出せますか" data-a="はい、宛名・但し書きを指定して発行可能でございます。kioskでは仮発行、正式発行はフロントにて承ります。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q65</div>
+  <div class="faq-question">会社名義の領収書は出せますか</div>
+  <div class="faq-answer">はい、宛名・但し書きを指定して発行可能でございます。Kioskでは仮発行、正式発行はフロントにて承ります。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">支払い・領収書</div>
+</div>
+<div class="faq-card" data-q="法人契約の請求書払いは可能ですか？" data-a="事前審査のうえ、法人契約のお客様には請求書払いをご案内できる場合がございます。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q66</div>
+  <div class="faq-question">法人契約の請求書払いは可能ですか？</div>
+  <div class="faq-answer">事前審査のうえ、法人契約のお客様には請求書払いをご案内できる場合がございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">支払い・領収書</div>
+</div>
+<div class="faq-card" data-q="法人請求で追加精算できますか？" data-a="はい、追加のご利用分は法人請求でご精算いただけます。決済端末の仕様により一部制限がある場合がございます。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q67</div>
+  <div class="faq-question">法人請求で追加精算できますか？</div>
+  <div class="faq-answer">はい、追加のご利用分は法人請求でご精算いただけます。決済端末の仕様により一部制限がある場合がございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">支払い・領収書</div>
+</div>
+<div class="faq-card" data-q="現金で支払いたいのですが？" data-a="スタッフに連絡いたしました。チェックイン手続きキャンセルして、右手にありますフロントにお越しください。">
+  <div class="faq-num">Q68</div>
+  <div class="faq-question">現金で支払いたいのですが？</div>
+  <div class="faq-answer">スタッフに連絡いたしました。チェックイン手続きキャンセルして、右手にありますフロントにお越しください。</div>
+  <div class="faq-cat">支払い・領収書</div>
+</div>
+<div class="faq-card" data-q="現金で支払えますか？" data-a="はい、現金でのお支払いに対応しております。ただし一部プランや精算種別では利用条件が異なる場合がございます。">
+  <div class="faq-num">Q69</div>
+  <div class="faq-question">現金で支払えますか？</div>
+  <div class="faq-answer">はい、現金でのお支払いに対応しております。ただし一部プランや精算種別では利用条件が異なる場合がございます。</div>
+  <div class="faq-cat">支払い・領収書</div>
+</div>
+<div class="faq-card" data-q="現金で追加精算できますか？" data-a="はい、追加のご利用分は現金でご精算いただけます。決済端末の仕様により一部制限がある場合がございます。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q70</div>
+  <div class="faq-question">現金で追加精算できますか？</div>
+  <div class="faq-answer">はい、追加のご利用分は現金でご精算いただけます。決済端末の仕様により一部制限がある場合がございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">支払い・領収書</div>
+</div>
+<div class="faq-card" data-q="電子マネーで追加精算できますか？" data-a="はい、追加のご利用分は電子マネーでご精算いただけます。決済端末の仕様により一部制限がある場合がございます。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q71</div>
+  <div class="faq-question">電子マネーで追加精算できますか？</div>
+  <div class="faq-answer">はい、追加のご利用分は電子マネーでご精算いただけます。決済端末の仕様により一部制限がある場合がございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">支払い・領収書</div>
+</div>
+<div class="faq-card" data-q="オールデイダイニング『ラウンジnbs』の営業時間を教えてください。" data-a="オールデイダイニング『ラウンジnbs』の営業時間は6:00から21:30でございます。イベントや点検により変更となる場合がございます。">
+  <div class="faq-num">Q72</div>
+  <div class="faq-question">オールデイダイニング『ラウンジNBS』の営業時間を教えてください。</div>
+  <div class="faq-answer">オールデイダイニング『ラウンジNBS』の営業時間は6:00から21:30でございます。イベントや点検により変更となる場合がございます。</div>
+  <div class="faq-cat">施設案内</div>
+</div>
+<div class="faq-card" data-q="オールデイダイニング『ラウンジnbs』は何階ですか？" data-a="オールデイダイニング『ラウンジnbs』は3階にございます。営業時間は6:00から21:30でございます。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q73</div>
+  <div class="faq-question">オールデイダイニング『ラウンジNBS』は何階ですか？</div>
+  <div class="faq-answer">オールデイダイニング『ラウンジNBS』は3階にございます。営業時間は6:00から21:30でございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">施設案内</div>
+</div>
+<div class="faq-card" data-q="コインランドリーは何階ですか？" data-a="コインランドリーは7階にございます。営業時間は24時間でございます。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q74</div>
+  <div class="faq-question">コインランドリーは何階ですか？</div>
+  <div class="faq-answer">コインランドリーは7階にございます。営業時間は24時間でございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">施設案内</div>
+</div>
+<div class="faq-card" data-q="コンシェルジュは何階ですか？" data-a="コンシェルジュは1階にございます。営業時間は7:00から22:00でございます。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q75</div>
+  <div class="faq-question">コンシェルジュは何階ですか？</div>
+  <div class="faq-answer">コンシェルジュは1階にございます。営業時間は7:00から22:00でございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">施設案内</div>
+</div>
+<div class="faq-card" data-q="サウナは何階ですか？" data-a="サウナは15階にございます。営業時間は17:00から24:30でございます。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q76</div>
+  <div class="faq-question">サウナは何階ですか？</div>
+  <div class="faq-answer">サウナは15階にございます。営業時間は17:00から24:30でございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">施設案内</div>
+</div>
+<div class="faq-card" data-q="スカイラウンジの営業時間を教えてください。" data-a="スカイラウンジの営業時間は10:00から22:00でございます。イベントや点検により変更となる場合がございます。">
+  <div class="faq-num">Q77</div>
+  <div class="faq-question">スカイラウンジの営業時間を教えてください。</div>
+  <div class="faq-answer">スカイラウンジの営業時間は10:00から22:00でございます。イベントや点検により変更となる場合がございます。</div>
+  <div class="faq-cat">施設案内</div>
+</div>
+<div class="faq-card" data-q="スカイラウンジは何階ですか？" data-a="スカイラウンジは16階にございます。営業時間は10:00から22:00でございます。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q78</div>
+  <div class="faq-question">スカイラウンジは何階ですか？</div>
+  <div class="faq-answer">スカイラウンジは16階にございます。営業時間は10:00から22:00でございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">施設案内</div>
+</div>
+<div class="faq-card" data-q="フィットネスジムは24時間ですか？" data-a="はい、宿泊者専用ジムは24時間ご利用いただけます。安全のため室内シューズの着用をお願いいたします。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q79</div>
+  <div class="faq-question">フィットネスジムは24時間ですか？</div>
+  <div class="faq-answer">はい、宿泊者専用ジムは24時間ご利用いただけます。安全のため室内シューズの着用をお願いいたします。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">施設案内</div>
+</div>
+<div class="faq-card" data-q="フィットネスジムは何階ですか？" data-a="フィットネスジムは15階にございます。営業時間は24時間でございます。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q80</div>
+  <div class="faq-question">フィットネスジムは何階ですか？</div>
+  <div class="faq-answer">フィットネスジムは15階にございます。営業時間は24時間でございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">施設案内</div>
+</div>
+<div class="faq-card" data-q="フロントは何階ですか？" data-a="フロントは1階にございます。営業時間は24時間対応でございます。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q81</div>
+  <div class="faq-question">フロントは何階ですか？</div>
+  <div class="faq-answer">フロントは1階にございます。営業時間は24時間対応でございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">施設案内</div>
+</div>
+<div class="faq-card" data-q="ベルデスクは何階ですか？" data-a="ベルデスクは1階にございます。営業時間は6:00から23:00でございます。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q82</div>
+  <div class="faq-question">ベルデスクは何階ですか？</div>
+  <div class="faq-answer">ベルデスクは1階にございます。営業時間は6:00から23:00でございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">施設案内</div>
+</div>
+<div class="faq-card" data-q="ルーフトップバーの営業時間を教えてください。" data-a="ルーフトップバーの営業時間は18:00から24:00でございます。イベントや点検により変更となる場合がございます。">
+  <div class="faq-num">Q83</div>
+  <div class="faq-question">ルーフトップバーの営業時間を教えてください。</div>
+  <div class="faq-answer">ルーフトップバーの営業時間は18:00から24:00でございます。イベントや点検により変更となる場合がございます。</div>
+  <div class="faq-cat">施設案内</div>
+</div>
+<div class="faq-card" data-q="ルーフトップバーは何階ですか？" data-a="ルーフトップバーは16階にございます。営業時間は18:00から24:00でございます。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q84</div>
+  <div class="faq-question">ルーフトップバーは何階ですか？</div>
+  <div class="faq-answer">ルーフトップバーは16階にございます。営業時間は18:00から24:00でございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">施設案内</div>
+</div>
+<div class="faq-card" data-q="レストラン『レストランnbs』は何階ですか？" data-a="レストラン『レストランnbs』は2階にございます。営業時間は6:30から22:00でございます。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q85</div>
+  <div class="faq-question">レストラン『レストランNBS』は何階ですか？</div>
+  <div class="faq-answer">レストラン『レストランNBS』は2階にございます。営業時間は6:30から22:00でございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">施設案内</div>
+</div>
+<div class="faq-card" data-q="会議室はありますか？" data-a="はい、5階に少人数向け会議室、4階に宴会場をご用意しております。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q86</div>
+  <div class="faq-question">会議室はありますか？</div>
+  <div class="faq-answer">はい、5階に少人数向け会議室、4階に宴会場をご用意しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">施設案内</div>
+</div>
+<div class="faq-card" data-q="会議室エリアは何階ですか？" data-a="会議室エリアは5階にございます。営業時間は8:00から20:00でございます。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q87</div>
+  <div class="faq-question">会議室エリアは何階ですか？</div>
+  <div class="faq-answer">会議室エリアは5階にございます。営業時間は8:00から20:00でございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">施設案内</div>
+</div>
+<div class="faq-card" data-q="大浴場の営業時間は？" data-a="大浴場は17:00から25:00までご利用いただけます。最終入場は24:30でございます。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q88</div>
+  <div class="faq-question">大浴場の営業時間は？</div>
+  <div class="faq-answer">大浴場は17:00から25:00までご利用いただけます。最終入場は24:30でございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">施設案内</div>
+</div>
+<div class="faq-card" data-q="大浴場の営業時間を教えてください。" data-a="大浴場の営業時間は17:00から25:00でございます。イベントや点検により変更となる場合がございます。">
+  <div class="faq-num">Q89</div>
+  <div class="faq-question">大浴場の営業時間を教えてください。</div>
+  <div class="faq-answer">大浴場の営業時間は17:00から25:00でございます。イベントや点検により変更となる場合がございます。</div>
+  <div class="faq-cat">施設案内</div>
+</div>
+<div class="faq-card" data-q="大浴場は何階ですか？" data-a="大浴場は15階にございます。営業時間は17:00から25:00でございます。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q90</div>
+  <div class="faq-question">大浴場は何階ですか？</div>
+  <div class="faq-answer">大浴場は15階にございます。営業時間は17:00から25:00でございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">施設案内</div>
+</div>
+<div class="faq-card" data-q="宴会場『nbsホール』の営業時間を教えてください。" data-a="宴会場『nbsホール』の営業時間は9:00から21:00でございます。イベントや点検により変更となる場合がございます。">
+  <div class="faq-num">Q91</div>
+  <div class="faq-question">宴会場『NBSホール』の営業時間を教えてください。</div>
+  <div class="faq-answer">宴会場『NBSホール』の営業時間は9:00から21:00でございます。イベントや点検により変更となる場合がございます。</div>
+  <div class="faq-cat">施設案内</div>
+</div>
+<div class="faq-card" data-q="宴会場『nbsホール』は何階ですか？" data-a="宴会場『nbsホール』は4階にございます。営業時間は9:00から21:00でございます。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q92</div>
+  <div class="faq-question">宴会場『NBSホール』は何階ですか？</div>
+  <div class="faq-answer">宴会場『NBSホール』は4階にございます。営業時間は9:00から21:00でございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">施設案内</div>
+</div>
+<div class="faq-card" data-q="最上階には何がありますか？" data-a="最上階には、宿泊者専用の「スカイラウンジ」、「フィットネスジム」と「大浴場」がございます。">
+  <div class="faq-num">Q93</div>
+  <div class="faq-question">最上階には何がありますか？</div>
+  <div class="faq-answer">最上階には、宿泊者専用の「スカイラウンジ」、「フィットネスジム」と「大浴場」がございます。</div>
+  <div class="faq-cat">施設案内</div>
+</div>
+<div class="faq-card" data-q="最上階のラウンジは誰でも利用できますか？" data-a="16階スカイラウンジは対象プランまたはクラブフロア宿泊のお客様がご利用いただけます。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q94</div>
+  <div class="faq-question">最上階のラウンジは誰でも利用できますか？</div>
+  <div class="faq-answer">16階スカイラウンジは対象プランまたはクラブフロア宿泊のお客様がご利用いただけます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">施設案内</div>
+</div>
+<div class="faq-card" data-q="朝食の営業時間を教えてください。" data-a="朝食は6:30から10:00まで、最終入店は9:30でございます。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q95</div>
+  <div class="faq-question">朝食の営業時間を教えてください。</div>
+  <div class="faq-answer">朝食は6:30から10:00まで、最終入店は9:30でございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">施設案内</div>
+</div>
+<div class="faq-card" data-q="自動販売機コーナーは何階ですか？" data-a="自動販売機コーナーは7階にございます。営業時間は24時間でございます。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q96</div>
+  <div class="faq-question">自動販売機コーナーは何階ですか？</div>
+  <div class="faq-answer">自動販売機コーナーは7階にございます。営業時間は24時間でございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">施設案内</div>
+</div>
+<div class="faq-card" data-q="製氷機は何階ですか？" data-a="製氷機は7階にございます。営業時間は24時間でございます。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q97</div>
+  <div class="faq-question">製氷機は何階ですか？</div>
+  <div class="faq-answer">製氷機は7階にございます。営業時間は24時間でございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">施設案内</div>
+</div>
+<div class="faq-card" data-q="nbs中央駅へ行くにはどうすればいいですか？" data-a="nbs中央駅へは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q98</div>
+  <div class="faq-question">NBS中央駅へ行くにはどうすればいいですか？</div>
+  <div class="faq-answer">NBS中央駅へは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">駐車場・アクセス</div>
+</div>
+<div class="faq-card" data-q="nbs公園駅へ行くにはどうすればいいですか？" data-a="nbs公園駅へは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q99</div>
+  <div class="faq-question">NBS公園駅へ行くにはどうすればいいですか？</div>
+  <div class="faq-answer">NBS公園駅へは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">駐車場・アクセス</div>
+</div>
+<div class="faq-card" data-q="お台場へ行くにはどうすればいいですか？" data-a="お台場へは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q100</div>
+  <div class="faq-question">お台場へ行くにはどうすればいいですか？</div>
+  <div class="faq-answer">お台場へは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">駐車場・アクセス</div>
+</div>
+<div class="faq-card" data-q="デラックスツインは何名まで泊まれますか？" data-a="デラックスツインの定員は客室仕様により異なります。ご予約画面またはフロントにて最新の定員をご確認ください。">
+  <div class="faq-num">Q101</div>
+  <div class="faq-question">デラックスツインは何名まで泊まれますか？</div>
+  <div class="faq-answer">デラックスツインの定員は客室仕様により異なります。ご予約画面またはフロントにて最新の定員をご確認ください。</div>
+  <div class="faq-cat">駐車場・アクセス</div>
+</div>
+<div class="faq-card" data-q="ホテルnbsからnbs中央駅までのアクセスを教えてください。" data-a="nbs中央駅へは電車・タクシー・バスのいずれでもアクセス可能です。所要時間は時間帯や交通状況により異なります。">
+  <div class="faq-num">Q102</div>
+  <div class="faq-question">ホテルNBSからNBS中央駅までのアクセスを教えてください。</div>
+  <div class="faq-answer">NBS中央駅へは電車・タクシー・バスのいずれでもアクセス可能です。所要時間は時間帯や交通状況により異なります。</div>
+  <div class="faq-cat">駐車場・アクセス</div>
+</div>
+<div class="faq-card" data-q="ホテルnbsからnbs公園駅までのアクセスを教えてください。" data-a="nbs公園駅へは電車・タクシー・バスのいずれでもアクセス可能です。所要時間は時間帯や交通状況により異なります。">
+  <div class="faq-num">Q103</div>
+  <div class="faq-question">ホテルNBSからNBS公園駅までのアクセスを教えてください。</div>
+  <div class="faq-answer">NBS公園駅へは電車・タクシー・バスのいずれでもアクセス可能です。所要時間は時間帯や交通状況により異なります。</div>
+  <div class="faq-cat">駐車場・アクセス</div>
+</div>
+<div class="faq-card" data-q="ホテルnbsからお台場までのアクセスを教えてください。" data-a="お台場へは電車・タクシー・バスのいずれでもアクセス可能です。所要時間は時間帯や交通状況により異なります。">
+  <div class="faq-num">Q104</div>
+  <div class="faq-question">ホテルNBSからお台場までのアクセスを教えてください。</div>
+  <div class="faq-answer">お台場へは電車・タクシー・バスのいずれでもアクセス可能です。所要時間は時間帯や交通状況により異なります。</div>
+  <div class="faq-cat">駐車場・アクセス</div>
+</div>
+<div class="faq-card" data-q="ユニバーサルルームは何名まで泊まれますか？" data-a="ユニバーサルルームの定員は客室仕様により異なります。ご予約画面またはフロントにて最新の定員をご確認ください。">
+  <div class="faq-num">Q105</div>
+  <div class="faq-question">ユニバーサルルームは何名まで泊まれますか？</div>
+  <div class="faq-answer">ユニバーサルルームの定員は客室仕様により異なります。ご予約画面またはフロントにて最新の定員をご確認ください。</div>
+  <div class="faq-cat">駐車場・アクセス</div>
+</div>
+<div class="faq-card" data-q="最寄り駅からのアクセスを教えてください。" data-a="最寄り駅はゆりかもめ『nbs駅』で、徒歩約7分でございます。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q106</div>
+  <div class="faq-question">最寄り駅からのアクセスを教えてください。</div>
+  <div class="faq-answer">最寄り駅はゆりかもめ『NBS駅』で、徒歩約7分でございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">駐車場・アクセス</div>
+</div>
+<div class="faq-card" data-q="有明アリーナへ行くにはどうすればいいですか？" data-a="有明アリーナへは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q107</div>
+  <div class="faq-question">有明アリーナへ行くにはどうすればいいですか？</div>
+  <div class="faq-answer">有明アリーナへは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">駐車場・アクセス</div>
+</div>
+<div class="faq-card" data-q="東京ビッグサイトへ行くにはどうすればいいですか？" data-a="東京ビッグサイトへは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q108</div>
+  <div class="faq-question">東京ビッグサイトへ行くにはどうすればいいですか？</div>
+  <div class="faq-answer">東京ビッグサイトへは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">駐車場・アクセス</div>
+</div>
+<div class="faq-card" data-q="空港からホテルまでの行き方は" data-a="羽田空港からはリムジンバスまたは電車をご利用いただけます。到着時間に応じて最適なルートをご案内いたします。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q109</div>
+  <div class="faq-question">空港からホテルまでの行き方は</div>
+  <div class="faq-answer">羽田空港からはリムジンバスまたは電車をご利用いただけます。到着時間に応じて最適なルートをご案内いたします。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">駐車場・アクセス</div>
+</div>
+<div class="faq-card" data-q="羽田空港へ行くにはどうすればいいですか？" data-a="羽田空港へは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q110</div>
+  <div class="faq-question">羽田空港へ行くにはどうすればいいですか？</div>
+  <div class="faq-answer">羽田空港へは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">駐車場・アクセス</div>
+</div>
+<div class="faq-card" data-q="豊洲市場へ行くにはどうすればいいですか？" data-a="豊洲市場へは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q111</div>
+  <div class="faq-question">豊洲市場へ行くにはどうすればいいですか？</div>
+  <div class="faq-answer">豊洲市場へは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">駐車場・アクセス</div>
+</div>
+<div class="faq-card" data-q="銀座へ行くにはどうすればいいですか？" data-a="銀座へは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q112</div>
+  <div class="faq-question">銀座へ行くにはどうすればいいですか？</div>
+  <div class="faq-answer">銀座へは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">駐車場・アクセス</div>
+</div>
+<div class="faq-card" data-q="駐車場はありますか" data-a="はい、ホテル地下および屋外提携駐車場をご利用いただけます。先着順でのご案内となります。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q113</div>
+  <div class="faq-question">駐車場はありますか</div>
+  <div class="faq-answer">はい、ホテル地下および屋外提携駐車場をご利用いただけます。先着順でのご案内となります。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">駐車場・アクセス</div>
+</div>
+<div class="faq-card" data-q="駐車料金はいくらですか" data-a="ご宿泊のお客様は1泊1台あたり2,000円でございます。プランにより無料特典が付く場合がございます。 最新情報は館内案内またはkiosk画面でもご確認いただけます。">
+  <div class="faq-num">Q114</div>
+  <div class="faq-question">駐車料金はいくらですか</div>
+  <div class="faq-answer">ご宿泊のお客様は1泊1台あたり2,000円でございます。プランにより無料特典が付く場合がございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。</div>
+  <div class="faq-cat">駐車場・アクセス</div>
 </div>
 
-<div class="container">
-    <div class="sidebar" id="sidebar"></div>
-    <div class="main-content" id="mainContent">
-        <div class="empty-state">
-            <div class="icon">📋</div>
-            <p>左のカテゴリを選択してFAQを表示</p>
-        </div>
-    </div>
 </div>
-
 <script>
-const DATA = {"駐車場・アクセス": [{"code": "", "question": "駐車場はありますか？", "answer": "はい、ホテル地下および屋外提携駐車場をご利用いただけます。先着順でのご案内となります。"}, {"code": "", "question": "豊洲市場へ行くにはどうすればいいですか？", "answer": "豊洲市場へは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "駐車場はありますか", "answer": "はい、ホテル地下および屋外提携駐車場をご利用いただけます。先着順でのご案内となります。ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "駐車場はありますか", "answer": "はい、ホテル地下および屋外提携駐車場をご利用いただけます。先着順でのご案内となります。詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "駐車料金はいくらですか？", "answer": "ご宿泊のお客様は1泊1台あたり2,000円でございます。プランにより無料特典が付く場合がございます。"}, {"code": "", "question": "駐車料金はいくらですか", "answer": "ご宿泊のお客様は1泊1台あたり2,000円でございます。プランにより無料特典が付く場合がございます。ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "駐車料金はいくらですか", "answer": "ご宿泊のお客様は1泊1台あたり2,000円でございます。プランにより無料特典が付く場合がございます。詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "最寄り駅からのアクセスを教えてください。", "answer": "最寄り駅はゆりかもめ『NBS駅』で、徒歩約7分でございます。"}, {"code": "", "question": "最寄り駅からのアクセスを教えてください。", "answer": "最寄り駅はゆりかもめ『NBS駅』で、徒歩約7分でございます。ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "最寄り駅からのアクセスを教えてください。", "answer": "最寄り駅はゆりかもめ『NBS駅』で、徒歩約7分でございます。詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "空港からホテルまでの行き方は？", "answer": "羽田空港からはリムジンバスまたは電車をご利用いただけます。到着時間に応じて最適なルートをご案内いたします。"}, {"code": "", "question": "空港からホテルまでの行き方は", "answer": "羽田空港からはリムジンバスまたは電車をご利用いただけます。到着時間に応じて最適なルートをご案内いたします。ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "空港からホテルまでの行き方は", "answer": "羽田空港からはリムジンバスまたは電車をご利用いただけます。到着時間に応じて最適なルートをご案内いたします。詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "お台場へ行くにはどうすればいいですか？", "answer": "お台場へは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "お台場へ行くにはどうすればいいですか？", "answer": "お台場へは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "銀座へ行くにはどうすればいいですか？", "answer": "銀座へは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "東京ビッグサイトへ行くにはどうすればいいですか？", "answer": "東京ビッグサイトへは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "NBS中央駅へ行くにはどうすればいいですか？", "answer": "NBS中央駅へは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "NBS公園駅へ行くにはどうすればいいですか？", "answer": "NBS公園駅へは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "銀座へ行くにはどうすればいいですか？", "answer": "銀座へは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "駐車料金はいくらですか？", "answer": "ご宿泊のお客様は1泊1台あたり2,000円でございます。プランにより無料特典が付く場合がございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "最寄り駅からのアクセスを教えてください。", "answer": "最寄り駅はゆりかもめ『NBS駅』で、徒歩約7分でございます。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "空港からホテルまでの行き方は？", "answer": "羽田空港からはリムジンバスまたは電車をご利用いただけます。到着時間に応じて最適なルートをご案内いたします。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "駐車場はありますか？", "answer": "はい、ホテル地下および屋外提携駐車場をご利用いただけます。先着順でのご案内となります。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "豊洲市場へ行くにはどうすればいいですか？", "answer": "豊洲市場へは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "有明アリーナへ行くにはどうすればいいですか？", "answer": "有明アリーナへは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "有明アリーナへ行くにはどうすればいいですか？", "answer": "有明アリーナへは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "豊洲市場へ行くにはどうすればいいですか？", "answer": "豊洲市場へは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "NBS中央駅へ行くにはどうすればいいですか？", "answer": "NBS中央駅へは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "銀座へ行くにはどうすればいいですか？", "answer": "銀座へは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "東京ビッグサイトへ行くにはどうすればいいですか？", "answer": "東京ビッグサイトへは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "NBS公園駅へ行くにはどうすればいいですか？", "answer": "NBS公園駅へは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "お台場へ行くにはどうすればいいですか？", "answer": "お台場へは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "羽田空港へ行くにはどうすればいいですか？", "answer": "羽田空港へは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "NBS公園駅へ行くにはどうすればいいですか？", "answer": "NBS公園駅へは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "駐車場はありますか？", "answer": "はい、ホテル地下および屋外提携駐車場をご利用いただけます。先着順でのご案内となります。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "駐車料金はいくらですか？", "answer": "ご宿泊のお客様は1泊1台あたり2,000円でございます。プランにより無料特典が付く場合がございます。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "最寄り駅からのアクセスを教えてください。", "answer": "最寄り駅はゆりかもめ『NBS駅』で、徒歩約7分でございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "空港からホテルまでの行き方は？", "answer": "羽田空港からはリムジンバスまたは電車をご利用いただけます。到着時間に応じて最適なルートをご案内いたします。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "お台場へ行くにはどうすればいいですか？", "answer": "お台場へは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "NBS公園駅へ行くにはどうすればいいですか？", "answer": "NBS公園駅へは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "銀座へ行くにはどうすればいいですか？", "answer": "銀座へは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "羽田空港へ行くにはどうすればいいですか？", "answer": "羽田空港へは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "東京ビッグサイトへ行くにはどうすればいいですか？", "answer": "東京ビッグサイトへは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "NBS中央駅へ行くにはどうすればいいですか？", "answer": "NBS中央駅へは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "有明アリーナへ行くにはどうすればいいですか？", "answer": "有明アリーナへは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "東京ビッグサイトへ行くにはどうすればいいですか？", "answer": "東京ビッグサイトへは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "銀座へ行くにはどうすればいいですか？", "answer": "銀座へは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "羽田空港へ行くにはどうすればいいですか？", "answer": "羽田空港へは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "駐車料金はいくらですか？", "answer": "ご宿泊のお客様は1泊1台あたり2,000円でございます。プランにより無料特典が付く場合がございます。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "空港からホテルまでの行き方は？", "answer": "羽田空港からはリムジンバスまたは電車をご利用いただけます。到着時間に応じて最適なルートをご案内いたします。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "駐車場はありますか？", "answer": "はい、ホテル地下および屋外提携駐車場をご利用いただけます。先着順でのご案内となります。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "NBS中央駅へ行くにはどうすればいいですか？", "answer": "NBS中央駅へは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "最寄り駅からのアクセスを教えてください。", "answer": "最寄り駅はゆりかもめ『NBS駅』で、徒歩約7分でございます。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "駐車場はありますか？", "answer": "はい、ホテル地下および屋外提携駐車場をご利用いただけます。先着順でのご案内となります。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "羽田空港へ行くにはどうすればいいですか？", "answer": "羽田空港へは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "駐車料金はいくらですか？", "answer": "ご宿泊のお客様は1泊1台あたり2,000円でございます。プランにより無料特典が付く場合がございます。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "NBS公園駅へ行くにはどうすればいいですか？", "answer": "NBS公園駅へは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "豊洲市場へ行くにはどうすればいいですか？", "answer": "豊洲市場へは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "空港からホテルまでの行き方は？", "answer": "羽田空港からはリムジンバスまたは電車をご利用いただけます。到着時間に応じて最適なルートをご案内いたします。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "駐車場はありますか？", "answer": "はい、ホテル地下および屋外提携駐車場をご利用いただけます。先着順でのご案内となります。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "東京ビッグサイトへ行くにはどうすればいいですか？", "answer": "東京ビッグサイトへは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "羽田空港へ行くにはどうすればいいですか？", "answer": "羽田空港へは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "駐車料金はいくらですか？", "answer": "ご宿泊のお客様は1泊1台あたり2,000円でございます。プランにより無料特典が付く場合がございます。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "お台場へ行くにはどうすればいいですか？", "answer": "お台場へは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "有明アリーナへ行くにはどうすればいいですか？", "answer": "有明アリーナへは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "豊洲市場へ行くにはどうすればいいですか？", "answer": "豊洲市場へは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "NBS中央駅へ行くにはどうすればいいですか？", "answer": "NBS中央駅へは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "最寄り駅からのアクセスを教えてください。", "answer": "最寄り駅はゆりかもめ『NBS駅』で、徒歩約7分でございます。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "有明アリーナへ行くにはどうすればいいですか？", "answer": "有明アリーナへは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "最寄り駅からのアクセスを教えてください。", "answer": "最寄り駅はゆりかもめ『NBS駅』で、徒歩約7分でございます。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "空港からホテルまでの行き方は？", "answer": "羽田空港からはリムジンバスまたは電車をご利用いただけます。到着時間に応じて最適なルートをご案内いたします。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "ホテルNBSからNBS中央駅までのアクセスを教えてください。", "answer": "NBS中央駅へは電車・タクシー・バスのいずれでもアクセス可能です。所要時間は時間帯や交通状況により異なります。"}, {"code": "", "question": "ホテルNBSからNBS公園駅までのアクセスを教えてください。", "answer": "NBS公園駅へは電車・タクシー・バスのいずれでもアクセス可能です。所要時間は時間帯や交通状況により異なります。"}, {"code": "", "question": "ホテルNBSからお台場までのアクセスを教えてください。", "answer": "お台場へは電車・タクシー・バスのいずれでもアクセス可能です。所要時間は時間帯や交通状況により異なります。"}, {"code": "", "question": "デラックスツインは何名まで泊まれますか？", "answer": "デラックスツインの定員は客室仕様により異なります。ご予約画面またはフロントにて最新の定員をご確認ください。"}, {"code": "", "question": "ユニバーサルルームは何名まで泊まれますか？", "answer": "ユニバーサルルームの定員は客室仕様により異なります。ご予約画面またはフロントにて最新の定員をご確認ください。"}], "客室・設備": [{"code": "", "question": "喫煙ルームはありますか？", "answer": "ホテルNBSの客室は全室禁煙でございます。喫煙は1階屋外の喫煙スペースをご利用ください。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "ベッドを追加できますか？", "answer": "一部の客室タイプではエキストラベッドの追加が可能でございます。客室タイプと宿泊人数により可否が異なります。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "客室でWi-Fiは使えますか？", "answer": "はい、全客室および館内共用部で無料Wi-Fiをご利用いただけます。SSIDとパスワードは客室内の案内をご確認ください。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "加湿空気清浄機はありますか？", "answer": "数に限りはございますが、貸出備品としてご用意しております。フロントまたはKioskのリクエストメニューからお申し付けください。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "長期滞在レジデンスで利用できるアメニティを教えてください。", "answer": "長期滞在レジデンスでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "クラブフロアキングで利用できるアメニティを教えてください。", "answer": "クラブフロアキングでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "スタンダードツインで利用できるアメニティを教えてください。", "answer": "スタンダードツインでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "スタンダードシングルで利用できるアメニティを教えてください。", "answer": "スタンダードシングルでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "キッズルームはありますか？", "answer": "はい、6階にご宿泊者専用キッズルームがございます。保護者同伴でご利用ください。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "子ども用アメニティはありますか？", "answer": "はい、歯ブラシ、スリッパ、ボディスポンジなどのお子様向けアメニティをご用意しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "ベビーベッドは借りられますか？", "answer": "対象年齢内のお子様向けに無料で貸出しております。台数に限りがあるため事前予約をおすすめいたします。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "スーペリアダブルで利用できるアメニティを教えてください。", "answer": "スーペリアダブルでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "ルームサービスはありますか？", "answer": "はい、17:00から22:00まで一部メニューにてルームサービスをご利用いただけます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "ユニバーサルルームで利用できるアメニティを教えてください。", "answer": "ユニバーサルルームでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "ルームサービスはありますか？", "answer": "はい、17:00から22:00まで一部メニューにてルームサービスをご利用いただけます。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "和洋室スイートで利用できるアメニティを教えてください。", "answer": "和洋室スイートでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "ユニバーサルルームで利用できるアメニティを教えてください。", "answer": "ユニバーサルルームでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "コネクティングルームで利用できるアメニティを教えてください。", "answer": "コネクティングルームでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "ファミリースイートで利用できるアメニティを教えてください。", "answer": "ファミリースイートでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "和洋室スイートで利用できるアメニティを教えてください。", "answer": "和洋室スイートでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "キッズルームは何階ですか？", "answer": "キッズルームは6階にございます。営業時間は9:00から20:00でございます。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "長期滞在レジデンスで利用できるアメニティを教えてください。", "answer": "長期滞在レジデンスでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "スーペリアダブルで利用できるアメニティを教えてください。", "answer": "スーペリアダブルでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "デラックスツインで利用できるアメニティを教えてください。", "answer": "デラックスツインでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "ユニバーサルルームで利用できるアメニティを教えてください。", "answer": "ユニバーサルルームでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "キッズルームはありますか？", "answer": "はい、6階にご宿泊者専用キッズルームがございます。保護者同伴でご利用ください。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "子ども用アメニティはありますか？", "answer": "はい、歯ブラシ、スリッパ、ボディスポンジなどのお子様向けアメニティをご用意しております。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "長期滞在レジデンスで利用できるアメニティを教えてください。", "answer": "長期滞在レジデンスでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "ビューバススイートで利用できるアメニティを教えてください。", "answer": "ビューバススイートでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "キッズルームは何階ですか？", "answer": "キッズルームは6階にございます。営業時間は9:00から20:00でございます。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "スタンダードシングルで利用できるアメニティを教えてください。", "answer": "スタンダードシングルでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "ルームサービスはありますか？", "answer": "はい、17:00から22:00まで一部メニューにてルームサービスをご利用いただけます。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "プレミアキングで利用できるアメニティを教えてください。", "answer": "プレミアキングでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "長期滞在レジデンスで利用できるアメニティを教えてください。", "answer": "長期滞在レジデンスでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "ビューバススイートで利用できるアメニティを教えてください。", "answer": "ビューバススイートでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "スタンダードツインで利用できるアメニティを教えてください。", "answer": "スタンダードツインでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "コネクティングルームで利用できるアメニティを教えてください。", "answer": "コネクティングルームでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "加湿空気清浄機はありますか？", "answer": "数に限りはございますが、貸出備品としてご用意しております。フロントまたはKioskのリクエストメニューからお申し付けください。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "喫煙ルームはありますか？", "answer": "ホテルNBSの客室は全室禁煙でございます。喫煙は1階屋外の喫煙スペースをご利用ください。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "ベッドを追加できますか？", "answer": "一部の客室タイプではエキストラベッドの追加が可能でございます。客室タイプと宿泊人数により可否が異なります。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "客室でWi-Fiは使えますか？", "answer": "はい、全客室および館内共用部で無料Wi-Fiをご利用いただけます。SSIDとパスワードは客室内の案内をご確認ください。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "デラックスツインで利用できるアメニティを教えてください。", "answer": "デラックスツインでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "クラブフロアキングで利用できるアメニティを教えてください。", "answer": "クラブフロアキングでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "キッズルームはありますか？", "answer": "はい、6階にご宿泊者専用キッズルームがございます。保護者同伴でご利用ください。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "ベビーベッドは借りられますか？", "answer": "対象年齢内のお子様向けに無料で貸出しております。台数に限りがあるため事前予約をおすすめいたします。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "ファミリースイートで利用できるアメニティを教えてください。", "answer": "ファミリースイートでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "プレミアキングで利用できるアメニティを教えてください。", "answer": "プレミアキングでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "ファミリースイートで利用できるアメニティを教えてください。", "answer": "ファミリースイートでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "長期滞在レジデンスで利用できるアメニティを教えてください。", "answer": "長期滞在レジデンスでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "プレミアキングで利用できるアメニティを教えてください。", "answer": "プレミアキングでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "ビューバススイートで利用できるアメニティを教えてください。", "answer": "ビューバススイートでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "キッズルームは何階ですか？", "answer": "キッズルームは6階にございます。営業時間は9:00から20:00でございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "子ども用アメニティはありますか？", "answer": "はい、歯ブラシ、スリッパ、ボディスポンジなどのお子様向けアメニティをご用意しております。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "スタンダードシングルで利用できるアメニティを教えてください。", "answer": "スタンダードシングルでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "コネクティングルームで利用できるアメニティを教えてください。", "answer": "コネクティングルームでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "スタンダードシングルで利用できるアメニティを教えてください。", "answer": "スタンダードシングルでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "スタンダードツインで利用できるアメニティを教えてください。", "answer": "スタンダードツインでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "キッズルームはありますか？", "answer": "はい、6階にご宿泊者専用キッズルームがございます。保護者同伴でご利用ください。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "子ども用アメニティはありますか？", "answer": "はい、歯ブラシ、スリッパ、ボディスポンジなどのお子様向けアメニティをご用意しております。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "ルームサービスはありますか？", "answer": "はい、17:00から22:00まで一部メニューにてルームサービスをご利用いただけます。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "デラックスツインで利用できるアメニティを教えてください。", "answer": "デラックスツインでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "ベビーベッドは借りられますか？", "answer": "対象年齢内のお子様向けに無料で貸出しております。台数に限りがあるため事前予約をおすすめいたします。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "コネクティングルームで利用できるアメニティを教えてください。", "answer": "コネクティングルームでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "ビューバススイートで利用できるアメニティを教えてください。", "answer": "ビューバススイートでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "和洋室スイートで利用できるアメニティを教えてください。", "answer": "和洋室スイートでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "デラックスツインで利用できるアメニティを教えてください。", "answer": "デラックスツインでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "ベッドを追加できますか？", "answer": "一部の客室タイプではエキストラベッドの追加が可能でございます。客室タイプと宿泊人数により可否が異なります。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "客室でWi-Fiは使えますか？", "answer": "はい、全客室および館内共用部で無料Wi-Fiをご利用いただけます。SSIDとパスワードは客室内の案内をご確認ください。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "スタンダードツインで利用できるアメニティを教えてください。", "answer": "スタンダードツインでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "ファミリースイートで利用できるアメニティを教えてください。", "answer": "ファミリースイートでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "プレミアキングで利用できるアメニティを教えてください。", "answer": "プレミアキングでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "クラブフロアキングで利用できるアメニティを教えてください。", "answer": "クラブフロアキングでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "子ども用アメニティはありますか？", "answer": "はい、歯ブラシ、スリッパ、ボディスポンジなどのお子様向けアメニティをご用意しております。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "スタンダードツインで利用できるアメニティを教えてください。", "answer": "スタンダードツインでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "スーペリアダブルで利用できるアメニティを教えてください。", "answer": "スーペリアダブルでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "クラブフロアキングで利用できるアメニティを教えてください。", "answer": "クラブフロアキングでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "喫煙ルームはありますか？", "answer": "ホテルNBSの客室は全室禁煙でございます。喫煙は1階屋外の喫煙スペースをご利用ください。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "加湿空気清浄機はありますか？", "answer": "数に限りはございますが、貸出備品としてご用意しております。フロントまたはKioskのリクエストメニューからお申し付けください。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "コネクティングルームで利用できるアメニティを教えてください。", "answer": "コネクティングルームでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "スーペリアダブルで利用できるアメニティを教えてください。", "answer": "スーペリアダブルでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "スーペリアダブルで利用できるアメニティを教えてください。", "answer": "スーペリアダブルでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "ベビーベッドは借りられますか？", "answer": "対象年齢内のお子様向けに無料で貸出しております。台数に限りがあるため事前予約をおすすめいたします。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "ベビーベッドは借りられますか？", "answer": "対象年齢内のお子様向けに無料で貸出しております。台数に限りがあるため事前予約をおすすめいたします。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "和洋室スイートで利用できるアメニティを教えてください。", "answer": "和洋室スイートでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "キッズルームは何階ですか？", "answer": "キッズルームは6階にございます。営業時間は9:00から20:00でございます。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "加湿空気清浄機はありますか？", "answer": "数に限りはございますが、貸出備品としてご用意しております。フロントまたはKioskのリクエストメニューからお申し付けください。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "客室でWi-Fiは使えますか？", "answer": "はい、全客室および館内共用部で無料Wi-Fiをご利用いただけます。SSIDとパスワードは客室内の案内をご確認ください。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "クラブフロアキングで利用できるアメニティを教えてください。", "answer": "クラブフロアキングでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "キッズルームはありますか？", "answer": "はい、6階にご宿泊者専用キッズルームがございます。保護者同伴でご利用ください。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "和洋室スイートで利用できるアメニティを教えてください。", "answer": "和洋室スイートでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "客室でWi-Fiは使えますか？", "answer": "はい、全客室および館内共用部で無料Wi-Fiをご利用いただけます。SSIDとパスワードは客室内の案内をご確認ください。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "加湿空気清浄機はありますか？", "answer": "数に限りはございますが、貸出備品としてご用意しております。フロントまたはKioskのリクエストメニューからお申し付けください。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "ベッドを追加できますか？", "answer": "一部の客室タイプではエキストラベッドの追加が可能でございます。客室タイプと宿泊人数により可否が異なります。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "ベッドを追加できますか？", "answer": "一部の客室タイプではエキストラベッドの追加が可能でございます。客室タイプと宿泊人数により可否が異なります。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "喫煙ルームはありますか？", "answer": "ホテルNBSの客室は全室禁煙でございます。喫煙は1階屋外の喫煙スペースをご利用ください。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "ビューバススイートで利用できるアメニティを教えてください。", "answer": "ビューバススイートでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "ファミリースイートで利用できるアメニティを教えてください。", "answer": "ファミリースイートでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "ユニバーサルルームで利用できるアメニティを教えてください。", "answer": "ユニバーサルルームでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "喫煙ルームはありますか？", "answer": "ホテルNBSの客室は全室禁煙でございます。喫煙は1階屋外の喫煙スペースをご利用ください。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "プレミアキングで利用できるアメニティを教えてください。", "answer": "プレミアキングでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "ユニバーサルルームで利用できるアメニティを教えてください。", "answer": "ユニバーサルルームでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "キッズルームは何階ですか？", "answer": "キッズルームは6階にございます。営業時間は9:00から20:00でございます。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "コネクティングルームの特徴を教えてください。", "answer": "コネクティングルームは快適性と機能性を両立した客室タイプで、用途に応じた設備とアメニティをご利用いただけます。"}, {"code": "", "question": "ルームサービスはありますか？", "answer": "はい、17:00から22:00まで一部メニューにてルームサービスをご利用いただけます。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "スタンダードシングルで利用できるアメニティを教えてください。", "answer": "スタンダードシングルでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "ビューバススイートの特徴を教えてください。", "answer": "ビューバススイートは快適性と機能性を両立した客室タイプで、用途に応じた設備とアメニティをご利用いただけます。"}, {"code": "", "question": "スタンダードツインの特徴を教えてください。", "answer": "スタンダードツインは快適性と機能性を両立した客室タイプで、用途に応じた設備とアメニティをご利用いただけます。"}, {"code": "", "question": "デラックスツインで利用できるアメニティを教えてください。", "answer": "デラックスツインでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "スーペリアダブルの特徴を教えてください。", "answer": "スーペリアダブルは快適性と機能性を両立した客室タイプで、用途に応じた設備とアメニティをご利用いただけます。"}, {"code": "", "question": "キッズルームはどこにありますか？", "answer": "キッズルームは6階にございます。営業時間は9:00から20:00でございます。"}], "施設案内": [{"code": "", "question": "スカイラウンジは何階ですか？", "answer": "スカイラウンジは16階にございます。営業時間は10:00から22:00でございます。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "会議室はありますか？", "answer": "はい、5階に少人数向け会議室、4階に宴会場をご用意しております。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "宴会場『NBSホール』は何階ですか？", "answer": "宴会場『NBSホール』は4階にございます。営業時間は9:00から21:00でございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "サウナは何階ですか？", "answer": "サウナは15階にございます。営業時間は17:00から24:30でございます。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "大浴場は何階ですか？", "answer": "大浴場は15階にございます。営業時間は17:00から25:00でございます。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "製氷機は何階ですか？", "answer": "製氷機は7階にございます。営業時間は24時間でございます。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "朝食の営業時間を教えてください。", "answer": "朝食は6:30から10:00まで、最終入店は9:30でございます。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "フロントは何階ですか？", "answer": "フロントは1階にございます。営業時間は24時間対応でございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "フィットネスジムは何階ですか？", "answer": "フィットネスジムは15階にございます。営業時間は24時間でございます。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "大浴場の営業時間は？", "answer": "大浴場は17:00から25:00までご利用いただけます。最終入場は24:30でございます。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "フィットネスジムは24時間ですか？", "answer": "はい、宿泊者専用ジムは24時間ご利用いただけます。安全のため室内シューズの着用をお願いいたします。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "最上階のラウンジは誰でも利用できますか？", "answer": "16階スカイラウンジは対象プランまたはクラブフロア宿泊のお客様がご利用いただけます。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "大浴場は何階ですか？", "answer": "大浴場は15階にございます。営業時間は17:00から25:00でございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "朝食の営業時間を教えてください。", "answer": "朝食は6:30から10:00まで、最終入店は9:30でございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "会議室エリアは何階ですか？", "answer": "会議室エリアは5階にございます。営業時間は8:00から20:00でございます。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "最上階のラウンジは誰でも利用できますか？", "answer": "16階スカイラウンジは対象プランまたはクラブフロア宿泊のお客様がご利用いただけます。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "大浴場の営業時間は？", "answer": "大浴場は17:00から25:00までご利用いただけます。最終入場は24:30でございます。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "フィットネスジムは24時間ですか？", "answer": "はい、宿泊者専用ジムは24時間ご利用いただけます。安全のため室内シューズの着用をお願いいたします。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "製氷機は何階ですか？", "answer": "製氷機は7階にございます。営業時間は24時間でございます。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "スカイラウンジは何階ですか？", "answer": "スカイラウンジは16階にございます。営業時間は10:00から22:00でございます。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "ルーフトップバーは何階ですか？", "answer": "ルーフトップバーは16階にございます。営業時間は18:00から24:00でございます。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "オールデイダイニング『ラウンジNBS』は何階ですか？", "answer": "オールデイダイニング『ラウンジNBS』は3階にございます。営業時間は6:00から21:30でございます。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "会議室はありますか？", "answer": "はい、5階に少人数向け会議室、4階に宴会場をご用意しております。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "コインランドリーは何階ですか？", "answer": "コインランドリーは7階にございます。営業時間は24時間でございます。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "朝食の営業時間を教えてください。", "answer": "朝食は6:30から10:00まで、最終入店は9:30でございます。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "ルーフトップバーは何階ですか？", "answer": "ルーフトップバーは16階にございます。営業時間は18:00から24:00でございます。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "会議室はありますか？", "answer": "はい、5階に少人数向け会議室、4階に宴会場をご用意しております。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "コンシェルジュは何階ですか？", "answer": "コンシェルジュは1階にございます。営業時間は7:00から22:00でございます。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "レストラン『レストランNBS』は何階ですか？", "answer": "レストラン『レストランNBS』は2階にございます。営業時間は6:30から22:00でございます。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "会議室はありますか？", "answer": "はい、5階に少人数向け会議室、4階に宴会場をご用意しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "サウナは何階ですか？", "answer": "サウナは15階にございます。営業時間は17:00から24:30でございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "ベルデスクは何階ですか？", "answer": "ベルデスクは1階にございます。営業時間は6:00から23:00でございます。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "最上階のラウンジは誰でも利用できますか？", "answer": "16階スカイラウンジは対象プランまたはクラブフロア宿泊のお客様がご利用いただけます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "大浴場の営業時間は？", "answer": "大浴場は17:00から25:00までご利用いただけます。最終入場は24:30でございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "フィットネスジムは24時間ですか？", "answer": "はい、宿泊者専用ジムは24時間ご利用いただけます。安全のため室内シューズの着用をお願いいたします。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "レストラン『レストランNBS』は何階ですか？", "answer": "レストラン『レストランNBS』は2階にございます。営業時間は6:30から22:00でございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "フィットネスジムは何階ですか？", "answer": "フィットネスジムは15階にございます。営業時間は24時間でございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "フィットネスジムは24時間ですか？", "answer": "はい、宿泊者専用ジムは24時間ご利用いただけます。安全のため室内シューズの着用をお願いいたします。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "大浴場の営業時間は？", "answer": "大浴場は17:00から25:00までご利用いただけます。最終入場は24:30でございます。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "コンシェルジュは何階ですか？", "answer": "コンシェルジュは1階にございます。営業時間は7:00から22:00でございます。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "オールデイダイニング『ラウンジNBS』は何階ですか？", "answer": "オールデイダイニング『ラウンジNBS』は3階にございます。営業時間は6:00から21:30でございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "スカイラウンジは何階ですか？", "answer": "スカイラウンジは16階にございます。営業時間は10:00から22:00でございます。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "大浴場の営業時間は？", "answer": "大浴場は17:00から25:00までご利用いただけます。最終入場は24:30でございます。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "会議室エリアは何階ですか？", "answer": "会議室エリアは5階にございます。営業時間は8:00から20:00でございます。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "朝食の営業時間を教えてください。", "answer": "朝食は6:30から10:00まで、最終入店は9:30でございます。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "自動販売機コーナーは何階ですか？", "answer": "自動販売機コーナーは7階にございます。営業時間は24時間でございます。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "製氷機は何階ですか？", "answer": "製氷機は7階にございます。営業時間は24時間でございます。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "フロントは何階ですか？", "answer": "フロントは1階にございます。営業時間は24時間対応でございます。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "会議室はありますか？", "answer": "はい、5階に少人数向け会議室、4階に宴会場をご用意しております。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "オールデイダイニング『ラウンジNBS』は何階ですか？", "answer": "オールデイダイニング『ラウンジNBS』は3階にございます。営業時間は6:00から21:30でございます。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "最上階のラウンジは誰でも利用できますか？", "answer": "16階スカイラウンジは対象プランまたはクラブフロア宿泊のお客様がご利用いただけます。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "フィットネスジムは何階ですか？", "answer": "フィットネスジムは15階にございます。営業時間は24時間でございます。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "ベルデスクは何階ですか？", "answer": "ベルデスクは1階にございます。営業時間は6:00から23:00でございます。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "宴会場『NBSホール』は何階ですか？", "answer": "宴会場『NBSホール』は4階にございます。営業時間は9:00から21:00でございます。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "フィットネスジムは何階ですか？", "answer": "フィットネスジムは15階にございます。営業時間は24時間でございます。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "レストラン『レストランNBS』は何階ですか？", "answer": "レストラン『レストランNBS』は2階にございます。営業時間は6:30から22:00でございます。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "ベルデスクは何階ですか？", "answer": "ベルデスクは1階にございます。営業時間は6:00から23:00でございます。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "自動販売機コーナーは何階ですか？", "answer": "自動販売機コーナーは7階にございます。営業時間は24時間でございます。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "レストラン『レストランNBS』は何階ですか？", "answer": "レストラン『レストランNBS』は2階にございます。営業時間は6:30から22:00でございます。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "サウナは何階ですか？", "answer": "サウナは15階にございます。営業時間は17:00から24:30でございます。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "ルーフトップバーは何階ですか？", "answer": "ルーフトップバーは16階にございます。営業時間は18:00から24:00でございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "会議室エリアは何階ですか？", "answer": "会議室エリアは5階にございます。営業時間は8:00から20:00でございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "自動販売機コーナーは何階ですか？", "answer": "自動販売機コーナーは7階にございます。営業時間は24時間でございます。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "スカイラウンジは何階ですか？", "answer": "スカイラウンジは16階にございます。営業時間は10:00から22:00でございます。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "コインランドリーは何階ですか？", "answer": "コインランドリーは7階にございます。営業時間は24時間でございます。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "コンシェルジュは何階ですか？", "answer": "コンシェルジュは1階にございます。営業時間は7:00から22:00でございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "宴会場『NBSホール』は何階ですか？", "answer": "宴会場『NBSホール』は4階にございます。営業時間は9:00から21:00でございます。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "ルーフトップバーは何階ですか？", "answer": "ルーフトップバーは16階にございます。営業時間は18:00から24:00でございます。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "コンシェルジュは何階ですか？", "answer": "コンシェルジュは1階にございます。営業時間は7:00から22:00でございます。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "オールデイダイニング『ラウンジNBS』は何階ですか？", "answer": "オールデイダイニング『ラウンジNBS』は3階にございます。営業時間は6:00から21:30でございます。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "製氷機は何階ですか？", "answer": "製氷機は7階にございます。営業時間は24時間でございます。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "大浴場は何階ですか？", "answer": "大浴場は15階にございます。営業時間は17:00から25:00でございます。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "会議室エリアは何階ですか？", "answer": "会議室エリアは5階にございます。営業時間は8:00から20:00でございます。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "フィットネスジムは何階ですか？", "answer": "フィットネスジムは15階にございます。営業時間は24時間でございます。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "サウナは何階ですか？", "answer": "サウナは15階にございます。営業時間は17:00から24:30でございます。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "製氷機は何階ですか？", "answer": "製氷機は7階にございます。営業時間は24時間でございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "フロントは何階ですか？", "answer": "フロントは1階にございます。営業時間は24時間対応でございます。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "オールデイダイニング『ラウンジNBS』は何階ですか？", "answer": "オールデイダイニング『ラウンジNBS』は3階にございます。営業時間は6:00から21:30でございます。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "大浴場は何階ですか？", "answer": "大浴場は15階にございます。営業時間は17:00から25:00でございます。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "自動販売機コーナーは何階ですか？", "answer": "自動販売機コーナーは7階にございます。営業時間は24時間でございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "ベルデスクは何階ですか？", "answer": "ベルデスクは1階にございます。営業時間は6:00から23:00でございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "コインランドリーは何階ですか？", "answer": "コインランドリーは7階にございます。営業時間は24時間でございます。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "ルーフトップバーは何階ですか？", "answer": "ルーフトップバーは16階にございます。営業時間は18:00から24:00でございます。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "コンシェルジュは何階ですか？", "answer": "コンシェルジュは1階にございます。営業時間は7:00から22:00でございます。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "会議室エリアは何階ですか？", "answer": "会議室エリアは5階にございます。営業時間は8:00から20:00でございます。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "フロントは何階ですか？", "answer": "フロントは1階にございます。営業時間は24時間対応でございます。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "宴会場『NBSホール』は何階ですか？", "answer": "宴会場『NBSホール』は4階にございます。営業時間は9:00から21:00でございます。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "最上階のラウンジは誰でも利用できますか？", "answer": "16階スカイラウンジは対象プランまたはクラブフロア宿泊のお客様がご利用いただけます。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "サウナは何階ですか？", "answer": "サウナは15階にございます。営業時間は17:00から24:30でございます。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "自動販売機コーナーは何階ですか？", "answer": "自動販売機コーナーは7階にございます。営業時間は24時間でございます。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "フロントはどこにありますか？", "answer": "フロントは1階にございます。営業時間は24時間対応でございます。"}, {"code": "", "question": "大浴場の営業時間を教えてください。", "answer": "大浴場の営業時間は17:00から25:00でございます。イベントや点検により変更となる場合がございます。"}, {"code": "", "question": "朝食の営業時間を教えてください。", "answer": "朝食は6:30から10:00まで、最終入店は9:30でございます。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "宴会場『NBSホール』は何階ですか？", "answer": "宴会場『NBSホール』は4階にございます。営業時間は9:00から21:00でございます。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "フィットネスジムは24時間ですか？", "answer": "はい、宿泊者専用ジムは24時間ご利用いただけます。安全のため室内シューズの着用をお願いいたします。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "ベルデスクは何階ですか？", "answer": "ベルデスクは1階にございます。営業時間は6:00から23:00でございます。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "コインランドリーは何階ですか？", "answer": "コインランドリーは7階にございます。営業時間は24時間でございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "フロントは何階ですか？", "answer": "フロントは1階にございます。営業時間は24時間対応でございます。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "レストラン『レストランNBS』は何階ですか？", "answer": "レストラン『レストランNBS』は2階にございます。営業時間は6:30から22:00でございます。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "スカイラウンジは何階ですか？", "answer": "スカイラウンジは16階にございます。営業時間は10:00から22:00でございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "大浴場は何階ですか？", "answer": "大浴場は15階にございます。営業時間は17:00から25:00でございます。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "コンシェルジュはどこにありますか？", "answer": "コンシェルジュは1階にございます。営業時間は7:00から22:00でございます。"}, {"code": "", "question": "スカイラウンジの営業時間を教えてください。", "answer": "スカイラウンジの営業時間は10:00から22:00でございます。イベントや点検により変更となる場合がございます。"}, {"code": "", "question": "レストラン『レストランNBS』はどこにありますか？", "answer": "レストラン『レストランNBS』は2階にございます。営業時間は6:30から22:00でございます。"}, {"code": "", "question": "ルーフトップバーの営業時間を教えてください。", "answer": "ルーフトップバーの営業時間は18:00から24:00でございます。イベントや点検により変更となる場合がございます。"}, {"code": "", "question": "コインランドリーは何階ですか？", "answer": "コインランドリーは7階にございます。営業時間は24時間でございます。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "オールデイダイニング『ラウンジNBS』の営業時間を教えてください。", "answer": "オールデイダイニング『ラウンジNBS』の営業時間は6:00から21:30でございます。イベントや点検により変更となる場合がございます。"}, {"code": "", "question": "宴会場『NBSホール』の営業時間を教えてください。", "answer": "宴会場『NBSホール』の営業時間は9:00から21:00でございます。イベントや点検により変更となる場合がございます。"}, {"code": "", "question": "大浴場はどこにありますか？", "answer": "大浴場は15階にございます。営業時間は17:00から25:00でございます。"}, {"code": "", "question": "最上階には何がありますか？", "answer": "最上階には、宿泊者専用の「スカイラウンジ」、「フィットネスジム」と「大浴場」がございます。"}], "予約・宿泊": [{"code": "", "question": "長期滞在のお客様向けに便利な案内はありますか？", "answer": "長期滞在のお客様には、用途に応じた館内サービス、周辺アクセス、食事案内をまとめてご案内しております。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "長期滞在のお客様向けに便利な案内はありますか？", "answer": "長期滞在のお客様には、用途に応じた館内サービス、周辺アクセス、食事案内をまとめてご案内しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "ホテルから荷物を送れますか？", "answer": "はい、国内配送の宅配便を1階ベルデスクで承っております。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "長期滞在のお客様向けに便利な案内はありますか？", "answer": "長期滞在のお客様には、用途に応じた館内サービス、周辺アクセス、食事案内をまとめてご案内しております。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "長期滞在のお客様向けに便利な案内はありますか？", "answer": "長期滞在のお客様には、用途に応じた館内サービス、周辺アクセス、食事案内をまとめてご案内しております。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "ホテルから荷物を送れますか？", "answer": "はい、国内配送の宅配便を1階ベルデスクで承っております。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "長期滞在のお客様向けに便利な案内はありますか？", "answer": "長期滞在のお客様には、用途に応じた館内サービス、周辺アクセス、食事案内をまとめてご案内しております。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "ホテルから荷物を送れますか？", "answer": "はい、国内配送の宅配便を1階ベルデスクで承っております。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "ホテルから荷物を送れますか？", "answer": "はい、国内配送の宅配便を1階ベルデスクで承っております。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "ホテルから荷物を送れますか？", "answer": "はい、国内配送の宅配便を1階ベルデスクで承っております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}], "周辺観光": [{"code": "", "question": "中国語での案内資料はありますか？", "answer": "中国語版の館内案内や避難案内を順次ご用意しております。必要な場合はスタッフへお申し付けください。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "英語での案内資料はありますか？", "answer": "英語版の館内案内や避難案内を順次ご用意しております。必要な場合はスタッフへお申し付けください。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "英語での案内資料はありますか？", "answer": "英語版の館内案内や避難案内を順次ご用意しております。必要な場合はスタッフへお申し付けください。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "日本語での案内資料はありますか？", "answer": "日本語版の館内案内や避難案内を順次ご用意しております。必要な場合はスタッフへお申し付けください。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "中国語での案内資料はありますか？", "answer": "中国語版の館内案内や避難案内を順次ご用意しております。必要な場合はスタッフへお申し付けください。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "日本語での案内資料はありますか？", "answer": "日本語版の館内案内や避難案内を順次ご用意しております。必要な場合はスタッフへお申し付けください。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "韓国語での案内資料はありますか？", "answer": "韓国語版の館内案内や避難案内を順次ご用意しております。必要な場合はスタッフへお申し付けください。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "韓国語での案内資料はありますか？", "answer": "韓国語版の館内案内や避難案内を順次ご用意しております。必要な場合はスタッフへお申し付けください。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "韓国語での案内資料はありますか？", "answer": "韓国語版の館内案内や避難案内を順次ご用意しております。必要な場合はスタッフへお申し付けください。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "英語で対応できますか？", "answer": "はい、日本語・英語でのご案内が可能でございます。時間帯により対応可能スタッフが異なる場合がございます。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "日本語での案内資料はありますか？", "answer": "日本語版の館内案内や避難案内を順次ご用意しております。必要な場合はスタッフへお申し付けください。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "韓国語での案内資料はありますか？", "answer": "韓国語版の館内案内や避難案内を順次ご用意しております。必要な場合はスタッフへお申し付けください。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "中国語での案内資料はありますか？", "answer": "中国語版の館内案内や避難案内を順次ご用意しております。必要な場合はスタッフへお申し付けください。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "英語で対応できますか？", "answer": "はい、日本語・英語でのご案内が可能でございます。時間帯により対応可能スタッフが異なる場合がございます。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "英語での案内資料はありますか？", "answer": "英語版の館内案内や避難案内を順次ご用意しております。必要な場合はスタッフへお申し付けください。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "日本語での案内資料はありますか？", "answer": "日本語版の館内案内や避難案内を順次ご用意しております。必要な場合はスタッフへお申し付けください。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "英語での案内資料はありますか？", "answer": "英語版の館内案内や避難案内を順次ご用意しております。必要な場合はスタッフへお申し付けください。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "中国語での案内資料はありますか？", "answer": "中国語版の館内案内や避難案内を順次ご用意しております。必要な場合はスタッフへお申し付けください。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "英語で対応できますか？", "answer": "はい、日本語・英語でのご案内が可能でございます。時間帯により対応可能スタッフが異なる場合がございます。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "中国語での案内資料はありますか？", "answer": "中国語版の館内案内や避難案内を順次ご用意しております。必要な場合はスタッフへお申し付けください。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "英語で対応できますか？", "answer": "はい、日本語・英語でのご案内が可能でございます。時間帯により対応可能スタッフが異なる場合がございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "英語で対応できますか？", "answer": "はい、日本語・英語でのご案内が可能でございます。時間帯により対応可能スタッフが異なる場合がございます。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "韓国語での案内資料はありますか？", "answer": "韓国語版の館内案内や避難案内を順次ご用意しております。必要な場合はスタッフへお申し付けください。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "英語での案内資料はありますか？", "answer": "英語版の館内案内や避難案内を順次ご用意しております。必要な場合はスタッフへお申し付けください。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "日本語での案内資料はありますか？", "answer": "日本語版の館内案内や避難案内を順次ご用意しております。必要な場合はスタッフへお申し付けください。 ご不明点がございましたらフロントまでお知らせください。"}], "支払い・領収書": [{"code": "", "question": "電子マネーで追加精算できますか？", "answer": "はい、追加のご利用分は電子マネーでご精算いただけます。決済端末の仕様により一部制限がある場合がございます。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "法人契約の請求書払いは可能ですか？", "answer": "事前審査のうえ、法人契約のお客様には請求書払いをご案内できる場合がございます。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "法人請求で追加精算できますか？", "answer": "はい、追加のご利用分は法人請求でご精算いただけます。決済端末の仕様により一部制限がある場合がございます。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "会社名義の領収書は出せますか？", "answer": "はい、宛名・但し書きを指定して発行可能でございます。Kioskでは仮発行、正式発行はフロントにて承ります。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "事前決済済みですが追加料金だけ現地で払えますか？", "answer": "はい、追加ご利用分のみ現地精算いただけます。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "デポジットは必要ですか？", "answer": "ご予約内容やお支払い方法により、ご到着時にデポジットをお願いする場合がございます。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "どの支払い方法が使えますか？", "answer": "現金、主要クレジットカード、交通系IC、各種QRコード決済に対応しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "クレジットカードで追加精算できますか？", "answer": "はい、追加のご利用分はクレジットカードでご精算いただけます。決済端末の仕様により一部制限がある場合がございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "どの支払い方法が使えますか？", "answer": "現金、主要クレジットカード、交通系IC、各種QRコード決済に対応しております。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "会社名義の領収書は出せますか？", "answer": "はい、宛名・但し書きを指定して発行可能でございます。Kioskでは仮発行、正式発行はフロントにて承ります。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "事前決済済みですが追加料金だけ現地で払えますか？", "answer": "はい、追加ご利用分のみ現地精算いただけます。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "デポジットは必要ですか？", "answer": "ご予約内容やお支払い方法により、ご到着時にデポジットをお願いする場合がございます。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "現金で追加精算できますか？", "answer": "はい、追加のご利用分は現金でご精算いただけます。決済端末の仕様により一部制限がある場合がございます。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "交通系ICで追加精算できますか？", "answer": "はい、追加のご利用分は交通系ICでご精算いただけます。決済端末の仕様により一部制限がある場合がございます。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "交通系ICで追加精算できますか？", "answer": "はい、追加のご利用分は交通系ICでご精算いただけます。決済端末の仕様により一部制限がある場合がございます。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "交通系ICで追加精算できますか？", "answer": "はい、追加のご利用分は交通系ICでご精算いただけます。決済端末の仕様により一部制限がある場合がございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "QRコード決済で追加精算できますか？", "answer": "はい、追加のご利用分はQRコード決済でご精算いただけます。決済端末の仕様により一部制限がある場合がございます。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "電子マネーで追加精算できますか？", "answer": "はい、追加のご利用分は電子マネーでご精算いただけます。決済端末の仕様により一部制限がある場合がございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "交通系ICで追加精算できますか？", "answer": "はい、追加のご利用分は交通系ICでご精算いただけます。決済端末の仕様により一部制限がある場合がございます。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "QRコード決済で追加精算できますか？", "answer": "はい、追加のご利用分はQRコード決済でご精算いただけます。決済端末の仕様により一部制限がある場合がございます。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "どの支払い方法が使えますか？", "answer": "現金、主要クレジットカード、交通系IC、各種QRコード決済に対応しております。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "事前決済済みですが追加料金だけ現地で払えますか？", "answer": "はい、追加ご利用分のみ現地精算いただけます。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "デポジットは必要ですか？", "answer": "ご予約内容やお支払い方法により、ご到着時にデポジットをお願いする場合がございます。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "法人請求で追加精算できますか？", "answer": "はい、追加のご利用分は法人請求でご精算いただけます。決済端末の仕様により一部制限がある場合がございます。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "現金で追加精算できますか？", "answer": "はい、追加のご利用分は現金でご精算いただけます。決済端末の仕様により一部制限がある場合がございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "デポジットは必要ですか？", "answer": "ご予約内容やお支払い方法により、ご到着時にデポジットをお願いする場合がございます。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "会社名義の領収書は出せますか？", "answer": "はい、宛名・但し書きを指定して発行可能でございます。Kioskでは仮発行、正式発行はフロントにて承ります。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "クレジットカードで追加精算できますか？", "answer": "はい、追加のご利用分はクレジットカードでご精算いただけます。決済端末の仕様により一部制限がある場合がございます。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "法人契約の請求書払いは可能ですか？", "answer": "事前審査のうえ、法人契約のお客様には請求書払いをご案内できる場合がございます。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "電子マネーで追加精算できますか？", "answer": "はい、追加のご利用分は電子マネーでご精算いただけます。決済端末の仕様により一部制限がある場合がございます。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "法人請求で追加精算できますか？", "answer": "はい、追加のご利用分は法人請求でご精算いただけます。決済端末の仕様により一部制限がある場合がございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "クレジットカードで追加精算できますか？", "answer": "はい、追加のご利用分はクレジットカードでご精算いただけます。決済端末の仕様により一部制限がある場合がございます。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "クレジットカードで追加精算できますか？", "answer": "はい、追加のご利用分はクレジットカードでご精算いただけます。決済端末の仕様により一部制限がある場合がございます。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "どの支払い方法が使えますか？", "answer": "現金、主要クレジットカード、交通系IC、各種QRコード決済に対応しております。"}, {"code": "", "question": "どの支払い方法が使えますか", "answer": "現金、主要クレジットカード、交通系IC、各種QRコード決済に対応しております。ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "どの支払い方法が使えますか", "answer": "現金、主要クレジットカード、交通系IC、各種QRコード決済に対応しております。詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "会社名義の領収書は出せますか？", "answer": "はい、宛名・但し書きを指定して発行可能でございます。Kioskでは仮発行、正式発行はフロントにて承ります。"}, {"code": "", "question": "会社名義の領収書は出せますか", "answer": "はい、宛名・但し書きを指定して発行可能でございます。Kioskでは仮発行、正式発行はフロントにて承ります。ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "会社名義の領収書は出せますか", "answer": "はい、宛名・但し書きを指定して発行可能でございます。Kioskでは仮発行、正式発行はフロントにて承ります。詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "事前決済済みですが追加料金だけ現地で払えますか？", "answer": "はい、追加ご利用分のみ現地精算いただけます。"}, {"code": "", "question": "事前決済済みですが追加料金だけ現地で払えますか", "answer": "はい、追加ご利用分のみ現地精算いただけます。ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "事前決済済みですが追加料金だけ現地で払えますか", "answer": "はい、追加ご利用分のみ現地精算いただけます。詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "デポジットは必要ですか？", "answer": "ご予約内容やお支払い方法により、ご到着時にデポジットをお願いする場合がございます。"}, {"code": "", "question": "デポジットは必要ですかについてもありますか？", "answer": "ご予約内容やお支払い方法により、ご到着時にデポジットをお願いする場合がございます。ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "デポジットは必要ですか", "answer": "ご予約内容やお支払い方法により、ご到着時にデポジットをお願いする場合がございます。詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "会社名義の領収書は出せますか？", "answer": "はい、宛名・但し書きを指定して発行可能でございます。Kioskでは仮発行、正式発行はフロントにて承ります。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "事前決済済みですが追加料金だけ現地で払えますか？", "answer": "はい、追加ご利用分のみ現地精算いただけます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "どの支払い方法が使えますか？", "answer": "現金、主要クレジットカード、交通系IC、各種QRコード決済に対応しております。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "法人請求で追加精算できますか？", "answer": "はい、追加のご利用分は法人請求でご精算いただけます。決済端末の仕様により一部制限がある場合がございます。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "現金で追加精算できますか？", "answer": "はい、追加のご利用分は現金でご精算いただけます。決済端末の仕様により一部制限がある場合がございます。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "電子マネーで追加精算できますか？", "answer": "はい、追加のご利用分は電子マネーでご精算いただけます。決済端末の仕様により一部制限がある場合がございます。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "QRコード決済で追加精算できますか？", "answer": "はい、追加のご利用分はQRコード決済でご精算いただけます。決済端末の仕様により一部制限がある場合がございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "電子マネーで追加精算できますか？", "answer": "はい、追加のご利用分は電子マネーでご精算いただけます。決済端末の仕様により一部制限がある場合がございます。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "事前決済済みですが追加料金だけ現地で払えますか？", "answer": "はい、追加ご利用分のみ現地精算いただけます。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "法人契約の請求書払いは可能ですか？", "answer": "事前審査のうえ、法人契約のお客様には請求書払いをご案内できる場合がございます。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "交通系ICで追加精算できますか？", "answer": "はい、追加のご利用分は交通系ICでご精算いただけます。決済端末の仕様により一部制限がある場合がございます。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "現金で追加精算できますか？", "answer": "はい、追加のご利用分は現金でご精算いただけます。決済端末の仕様により一部制限がある場合がございます。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "法人請求で追加精算できますか？", "answer": "はい、追加のご利用分は法人請求でご精算いただけます。決済端末の仕様により一部制限がある場合がございます。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "QRコード決済で追加精算できますか？", "answer": "はい、追加のご利用分はQRコード決済でご精算いただけます。決済端末の仕様により一部制限がある場合がございます。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "法人契約の請求書払いは可能ですか？", "answer": "事前審査のうえ、法人契約のお客様には請求書払いをご案内できる場合がございます。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "QRコード決済で追加精算できますか？", "answer": "はい、追加のご利用分はQRコード決済でご精算いただけます。決済端末の仕様により一部制限がある場合がございます。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "どの支払い方法が使えますか？", "answer": "現金、主要クレジットカード、交通系IC、各種QRコード決済に対応しております。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "会社名義の領収書は出せますか？", "answer": "はい、宛名・但し書きを指定して発行可能でございます。Kioskでは仮発行、正式発行はフロントにて承ります。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "現金で追加精算できますか？", "answer": "はい、追加のご利用分は現金でご精算いただけます。決済端末の仕様により一部制限がある場合がございます。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "法人契約の請求書払いは可能ですか？", "answer": "事前審査のうえ、法人契約のお客様には請求書払いをご案内できる場合がございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "クレジットカードで追加精算できますか？", "answer": "はい、追加のご利用分はクレジットカードでご精算いただけます。決済端末の仕様により一部制限がある場合がございます。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "デポジットは必要ですか？", "answer": "ご予約内容やお支払い方法により、ご到着時にデポジットをお願いする場合がございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "現金で支払えますか？", "answer": "はい、現金でのお支払いに対応しております。ただし一部プランや精算種別では利用条件が異なる場合がございます。"}, {"code": "", "question": "現金で支払いたいのですが？", "answer": "スタッフに連絡いたしました。チェックイン手続きキャンセルして、右手にありますフロントにお越しください。"}], "サービス": [{"code": "", "question": "プロジェクターは借りられますか？", "answer": "はい、有料オプションとしてプロジェクター、スクリーン、マイクをご用意しております。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "研修利用の昼食手配はできますか？", "answer": "はい、ご予算に応じてお弁当または宴会場での食事手配が可能でございます。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "ビジネス利用のお客様向けに便利な案内はありますか？", "answer": "ビジネス利用のお客様には、用途に応じた館内サービス、周辺アクセス、食事案内をまとめてご案内しております。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "ビジネス利用のお客様向けに便利な案内はありますか？", "answer": "ビジネス利用のお客様には、用途に応じた館内サービス、周辺アクセス、食事案内をまとめてご案内しております。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "ご家族連れのお客様向けに便利な案内はありますか？", "answer": "ご家族連れのお客様には、用途に応じた館内サービス、周辺アクセス、食事案内をまとめてご案内しております。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "海外からのお客様向けに便利な案内はありますか？", "answer": "海外からのお客様には、用途に応じた館内サービス、周辺アクセス、食事案内をまとめてご案内しております。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "記念日利用のお客様向けに便利な案内はありますか？", "answer": "記念日利用のお客様には、用途に応じた館内サービス、周辺アクセス、食事案内をまとめてご案内しております。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "ビジネス利用のお客様向けに便利な案内はありますか？", "answer": "ビジネス利用のお客様には、用途に応じた館内サービス、周辺アクセス、食事案内をまとめてご案内しております。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "記念日利用のお客様向けに便利な案内はありますか？", "answer": "記念日利用のお客様には、用途に応じた館内サービス、周辺アクセス、食事案内をまとめてご案内しております。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "海外からのお客様向けに便利な案内はありますか？", "answer": "海外からのお客様には、用途に応じた館内サービス、周辺アクセス、食事案内をまとめてご案内しております。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "プロジェクターは借りられますか？", "answer": "はい、有料オプションとしてプロジェクター、スクリーン、マイクをご用意しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "ご家族連れのお客様向けに便利な案内はありますか？", "answer": "ご家族連れのお客様には、用途に応じた館内サービス、周辺アクセス、食事案内をまとめてご案内しております。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "ご家族連れのお客様向けに便利な案内はありますか？", "answer": "ご家族連れのお客様には、用途に応じた館内サービス、周辺アクセス、食事案内をまとめてご案内しております。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "プロジェクターは借りられますか？", "answer": "はい、有料オプションとしてプロジェクター、スクリーン、マイクをご用意しております。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "海外からのお客様向けに便利な案内はありますか？", "answer": "海外からのお客様には、用途に応じた館内サービス、周辺アクセス、食事案内をまとめてご案内しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "ビジネス利用のお客様向けに便利な案内はありますか？", "answer": "ビジネス利用のお客様には、用途に応じた館内サービス、周辺アクセス、食事案内をまとめてご案内しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "記念日利用のお客様向けに便利な案内はありますか？", "answer": "記念日利用のお客様には、用途に応じた館内サービス、周辺アクセス、食事案内をまとめてご案内しております。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "記念日利用のお客様向けに便利な案内はありますか？", "answer": "記念日利用のお客様には、用途に応じた館内サービス、周辺アクセス、食事案内をまとめてご案内しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "記念日利用のお客様向けに便利な案内はありますか？", "answer": "記念日利用のお客様には、用途に応じた館内サービス、周辺アクセス、食事案内をまとめてご案内しております。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "海外からのお客様向けに便利な案内はありますか？", "answer": "海外からのお客様には、用途に応じた館内サービス、周辺アクセス、食事案内をまとめてご案内しております。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "研修利用の昼食手配はできますか？", "answer": "はい、ご予算に応じてお弁当または宴会場での食事手配が可能でございます。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "研修利用の昼食手配はできますか？", "answer": "はい、ご予算に応じてお弁当または宴会場での食事手配が可能でございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "研修利用の昼食手配はできますか？", "answer": "はい、ご予算に応じてお弁当または宴会場での食事手配が可能でございます。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "プロジェクターは借りられますか？", "answer": "はい、有料オプションとしてプロジェクター、スクリーン、マイクをご用意しております。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "ビジネス利用のお客様向けに便利な案内はありますか？", "answer": "ビジネス利用のお客様には、用途に応じた館内サービス、周辺アクセス、食事案内をまとめてご案内しております。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "ご家族連れのお客様向けに便利な案内はありますか？", "answer": "ご家族連れのお客様には、用途に応じた館内サービス、周辺アクセス、食事案内をまとめてご案内しております。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "海外からのお客様向けに便利な案内はありますか？", "answer": "海外からのお客様には、用途に応じた館内サービス、周辺アクセス、食事案内をまとめてご案内しております。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "ご家族連れのお客様向けに便利な案内はありますか？", "answer": "ご家族連れのお客様には、用途に応じた館内サービス、周辺アクセス、食事案内をまとめてご案内しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "プロジェクターは借りられますか？", "answer": "はい、有料オプションとしてプロジェクター、スクリーン、マイクをご用意しております。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "研修利用の昼食手配はできますか？", "answer": "はい、ご予算に応じてお弁当または宴会場での食事手配が可能でございます。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "ご家族連れのお客様におすすめのサービスはありますか？", "answer": "ご家族連れのお客様には、館内案内、周辺情報、貸出備品、レストラン予約などを組み合わせたご提案が可能でございます。"}, {"code": "", "question": "ビジネス利用のお客様におすすめのサービスはありますか？", "answer": "ビジネス利用のお客様には、館内案内、周辺情報、貸出備品、レストラン予約などを組み合わせたご提案が可能でございます。"}], "一般": [{"code": "", "question": "添い寝は可能ですか？", "answer": "未就学のお子様はベッド1台につき1名まで添い寝無料でご案内しております。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "朝食会場はどこですか？", "answer": "朝食会場は2階『レストランNBS』でございます。時間帯により混雑いたしますので、余裕をもってご利用ください。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "アレルギー対応は可能ですか？", "answer": "可能な範囲で対応いたします。重篤なアレルギーをお持ちの場合は、事前に詳細をお知らせください。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "朝食会場はどこですか？", "answer": "朝食会場は2階『レストランNBS』でございます。時間帯により混雑いたしますので、余裕をもってご利用ください。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "アレルギー対応は可能ですか？", "answer": "可能な範囲で対応いたします。重篤なアレルギーをお持ちの場合は、事前に詳細をお知らせください。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "サウナはありますか？", "answer": "はい、15階大浴場エリアにドライサウナをご用意しております。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "アレルギー対応は可能ですか？", "answer": "可能な範囲で対応いたします。重篤なアレルギーをお持ちの場合は、事前に詳細をお知らせください。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "朝食会場はどこですか？", "answer": "朝食会場は2階『レストランNBS』でございます。時間帯により混雑いたしますので、余裕をもってご利用ください。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "冷蔵品や冷凍品の預かりはできますか？", "answer": "衛生管理上、お預かりできない品目がございます。事前にフロントへご相談ください。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "火災報知器が鳴ったらどうすればいいですか？", "answer": "館内放送とスタッフの案内に従い、非常口から落ち着いて避難してください。エレベーターは使用しないでください。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "カードキーをなくしました。", "answer": "防犯のため既存キーを無効化し、新しいカードキーを再発行いたします。本人確認にご協力ください。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "パスポートの提示は必要ですか？", "answer": "海外からお越しで日本国内に住所をお持ちでないお客様には、法令に基づきパスポートの確認をお願いしております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "外貨両替はできますか？", "answer": "館内では外貨両替を承っておりませんが、近隣の両替機または銀行をご案内いたします。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "変換プラグは借りられますか？", "answer": "はい、数に限りはございますが、各種変換プラグを無料で貸出しております。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "朝食会場はどこですか？", "answer": "朝食会場は2階『レストランNBS』でございます。時間帯により混雑いたしますので、余裕をもってご利用ください。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "変換プラグは借りられますか？", "answer": "はい、数に限りはございますが、各種変換プラグを無料で貸出しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "パスポートの提示は必要ですか？", "answer": "海外からお越しで日本国内に住所をお持ちでないお客様には、法令に基づきパスポートの確認をお願いしております。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "サウナはありますか？", "answer": "はい、15階大浴場エリアにドライサウナをご用意しております。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "パスポートの提示は必要ですか？", "answer": "海外からお越しで日本国内に住所をお持ちでないお客様には、法令に基づきパスポートの確認をお願いしております。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "外貨両替はできますか？", "answer": "館内では外貨両替を承っておりませんが、近隣の両替機または銀行をご案内いたします。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "変換プラグは借りられますか？", "answer": "はい、数に限りはございますが、各種変換プラグを無料で貸出しております。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "冷蔵品や冷凍品の預かりはできますか？", "answer": "衛生管理上、お預かりできない品目がございます。事前にフロントへご相談ください。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "サウナはありますか？", "answer": "はい、15階大浴場エリアにドライサウナをご用意しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "カードキーをなくしました。", "answer": "防犯のため既存キーを無効化し、新しいカードキーを再発行いたします。本人確認にご協力ください。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "パスポートの提示は必要ですか？", "answer": "海外からお越しで日本国内に住所をお持ちでないお客様には、法令に基づきパスポートの確認をお願いしております。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "外貨両替はできますか？", "answer": "館内では外貨両替を承っておりませんが、近隣の両替機または銀行をご案内いたします。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "変換プラグは借りられますか？", "answer": "はい、数に限りはございますが、各種変換プラグを無料で貸出しております。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "添い寝は可能ですか？", "answer": "未就学のお子様はベッド1台につき1名まで添い寝無料でご案内しております。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "アレルギー対応は可能ですか？", "answer": "可能な範囲で対応いたします。重篤なアレルギーをお持ちの場合は、事前に詳細をお知らせください。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "添い寝は可能ですか？", "answer": "未就学のお子様はベッド1台につき1名まで添い寝無料でご案内しております。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "外貨両替はできますか？", "answer": "館内では外貨両替を承っておりませんが、近隣の両替機または銀行をご案内いたします。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "火災報知器が鳴ったらどうすればいいですか？", "answer": "館内放送とスタッフの案内に従い、非常口から落ち着いて避難してください。エレベーターは使用しないでください。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "カードキーをなくしました。", "answer": "防犯のため既存キーを無効化し、新しいカードキーを再発行いたします。本人確認にご協力ください。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "パスポートの提示は必要ですか？", "answer": "海外からお越しで日本国内に住所をお持ちでないお客様には、法令に基づきパスポートの確認をお願いしております。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "外貨両替はできますか？", "answer": "館内では外貨両替を承っておりませんが、近隣の両替機または銀行をご案内いたします。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "サウナはありますか？", "answer": "はい、15階大浴場エリアにドライサウナをご用意しております。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "添い寝は可能ですか？", "answer": "未就学のお子様はベッド1台につき1名まで添い寝無料でご案内しております。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "冷蔵品や冷凍品の預かりはできますか？", "answer": "衛生管理上、お預かりできない品目がございます。事前にフロントへご相談ください。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "火災報知器が鳴ったらどうすればいいですか？", "answer": "館内放送とスタッフの案内に従い、非常口から落ち着いて避難してください。エレベーターは使用しないでください。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "冷蔵品や冷凍品の預かりはできますか？", "answer": "衛生管理上、お預かりできない品目がございます。事前にフロントへご相談ください。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "冷蔵品や冷凍品の預かりはできますか？", "answer": "衛生管理上、お預かりできない品目がございます。事前にフロントへご相談ください。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "カードキーをなくしました。", "answer": "防犯のため既存キーを無効化し、新しいカードキーを再発行いたします。本人確認にご協力ください。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "火災報知器が鳴ったらどうすればいいですか？", "answer": "館内放送とスタッフの案内に従い、非常口から落ち着いて避難してください。エレベーターは使用しないでください。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "添い寝は可能ですか？", "answer": "未就学のお子様はベッド1台につき1名まで添い寝無料でご案内しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "変換プラグは借りられますか？", "answer": "はい、数に限りはございますが、各種変換プラグを無料で貸出しております。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "カードキーをなくしました。", "answer": "防犯のため既存キーを無効化し、新しいカードキーを再発行いたします。本人確認にご協力ください。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "サウナはありますか？", "answer": "はい、15階大浴場エリアにドライサウナをご用意しております。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "アレルギー対応は可能ですか？", "answer": "可能な範囲で対応いたします。重篤なアレルギーをお持ちの場合は、事前に詳細をお知らせください。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "火災報知器が鳴ったらどうすればいいですか？", "answer": "館内放送とスタッフの案内に従い、非常口から落ち着いて避難してください。エレベーターは使用しないでください。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "朝食会場はどこですか？", "answer": "朝食会場は2階『レストランNBS』でございます。時間帯により混雑いたしますので、余裕をもってご利用ください。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}], "トラブル・緊急対応": [{"code": "", "question": "忘れ物をした場合はどうなりますか？", "answer": "発見されたお忘れ物は一定期間保管しております。お心当たりの品がございましたら、宿泊日とお部屋番号を添えてお問い合わせください。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "体調が悪いのですが。", "answer": "必要に応じて救急相談窓口や近隣医療機関をご案内いたします。緊急性が高い場合はすぐにスタッフへお知らせください。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "部屋の設備が故障しています。", "answer": "ご不便をおかけし申し訳ございません。状況を確認のうえ、客室移動または修理対応を手配いたします。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "忘れ物をした場合はどうなりますか？", "answer": "発見されたお忘れ物は一定期間保管しております。お心当たりの品がございましたら、宿泊日とお部屋番号を添えてお問い合わせください。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "体調が悪いのですが。", "answer": "必要に応じて救急相談窓口や近隣医療機関をご案内いたします。緊急性が高い場合はすぐにスタッフへお知らせください。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "部屋の設備が故障しています。", "answer": "ご不便をおかけし申し訳ございません。状況を確認のうえ、客室移動または修理対応を手配いたします。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "部屋の設備が故障しています。", "answer": "ご不便をおかけし申し訳ございません。状況を確認のうえ、客室移動または修理対応を手配いたします。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "体調が悪いのですが。", "answer": "必要に応じて救急相談窓口や近隣医療機関をご案内いたします。緊急性が高い場合はすぐにスタッフへお知らせください。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "忘れ物をした場合はどうなりますか？", "answer": "発見されたお忘れ物は一定期間保管しております。お心当たりの品がございましたら、宿泊日とお部屋番号を添えてお問い合わせください。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "体調が悪いのですが。", "answer": "必要に応じて救急相談窓口や近隣医療機関をご案内いたします。緊急性が高い場合はすぐにスタッフへお知らせください。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "忘れ物をした場合はどうなりますか？", "answer": "発見されたお忘れ物は一定期間保管しております。お心当たりの品がございましたら、宿泊日とお部屋番号を添えてお問い合わせください。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "忘れ物をした場合はどうなりますか？", "answer": "発見されたお忘れ物は一定期間保管しております。お心当たりの品がございましたら、宿泊日とお部屋番号を添えてお問い合わせください。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "部屋の設備が故障しています。", "answer": "ご不便をおかけし申し訳ございません。状況を確認のうえ、客室移動または修理対応を手配いたします。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "部屋の設備が故障しています。", "answer": "ご不便をおかけし申し訳ございません。状況を確認のうえ、客室移動または修理対応を手配いたします。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "カードキーをなくしました。", "answer": "防犯のため既存キーを無効化し、新しいカードキーを再発行いたします。本人確認にご協力ください。"}, {"code": "", "question": "カードキーをなくしました。", "answer": "防犯のため既存キーを無効化し、新しいカードキーを再発行いたします。本人確認にご協力ください。ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "カードキーをなくしました。念のためありますか？", "answer": "防犯のため既存キーを無効化し、新しいカードキーを再発行いたします。本人確認にご協力ください。詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "部屋の設備が故障しています。", "answer": "ご不便をおかけし申し訳ございません。状況を確認のうえ、客室移動または修理対応を手配いたします。"}, {"code": "", "question": "部屋の設備が故障しています。あわせて可能ですか？", "answer": "ご不便をおかけし申し訳ございません。状況を確認のうえ、客室移動または修理対応を手配いたします。ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "部屋の設備が故障しています。", "answer": "ご不便をおかけし申し訳ございません。状況を確認のうえ、客室移動または修理対応を手配いたします。詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "体調が悪いのですが。", "answer": "必要に応じて救急相談窓口や近隣医療機関をご案内いたします。緊急性が高い場合はすぐにスタッフへお知らせください。"}, {"code": "", "question": "体調が悪いのですが。", "answer": "必要に応じて救急相談窓口や近隣医療機関をご案内いたします。緊急性が高い場合はすぐにスタッフへお知らせください。ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "体調が悪いのですが。", "answer": "必要に応じて救急相談窓口や近隣医療機関をご案内いたします。緊急性が高い場合はすぐにスタッフへお知らせください。詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "火災報知器が鳴ったらどうすればいいですか？", "answer": "館内放送とスタッフの案内に従い、非常口から落ち着いて避難してください。エレベーターは使用しないでください。"}, {"code": "", "question": "火災報知器が鳴ったらどうすればいいですか", "answer": "館内放送とスタッフの案内に従い、非常口から落ち着いて避難してください。エレベーターは使用しないでください。ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "火災報知器が鳴ったらどうすればいいですか", "answer": "館内放送とスタッフの案内に従い、非常口から落ち着いて避難してください。エレベーターは使用しないでください。詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "体調が悪いのですが。", "answer": "必要に応じて救急相談窓口や近隣医療機関をご案内いたします。緊急性が高い場合はすぐにスタッフへお知らせください。 混雑状況によりご案内が変わる場合がございます。"}], "チェックイン・チェックアウト": [{"code": "", "question": "チェックイン前に荷物を預けられますか？", "answer": "はい、当日朝からフロントまたはベルデスクでお預かりいたします。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "有人フロントでの手続きも可能ですか？", "answer": "はい、フロントカウンターでもお手続きいただけます。混雑時はKioskのご利用がスムーズです。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "チェックインは何時からできますか？", "answer": "通常のチェックイン開始時刻は15:00でございます。ご到着が早い場合は、お部屋の準備状況によりアーリーチェックインをご案内いたします。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "チェックアウトは何時までですか？", "answer": "通常のチェックアウト時刻は11:00でございます。正午以降のご利用は追加料金が発生する場合がございます。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "セルフチェックイン機は使えますか？", "answer": "はい、1階ロビーのAIチェックインKioskをご利用いただけます。ご予約名または予約番号、本人確認書類をご準備ください。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "チェックアウトは何時までですか？", "answer": "通常のチェックアウト時刻は11:00でございます。正午以降のご利用は追加料金が発生する場合がございます。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "セルフチェックイン機は使えますか？", "answer": "はい、1階ロビーのAIチェックインKioskをご利用いただけます。ご予約名または予約番号、本人確認書類をご準備ください。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "有人フロントでの手続きも可能ですか？", "answer": "はい、フロントカウンターでもお手続きいただけます。混雑時はKioskのご利用がスムーズです。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "チェックインは何時からできますか？", "answer": "通常のチェックイン開始時刻は15:00でございます。ご到着が早い場合は、お部屋の準備状況によりアーリーチェックインをご案内いたします。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "有人フロントでの手続きも可能ですか？", "answer": "はい、フロントカウンターでもお手続きいただけます。混雑時はKioskのご利用がスムーズです。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "チェックインは何時からできますか？", "answer": "通常のチェックイン開始時刻は15:00でございます。ご到着が早い場合は、お部屋の準備状況によりアーリーチェックインをご案内いたします。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "チェックアウトは何時までですか？", "answer": "通常のチェックアウト時刻は11:00でございます。正午以降のご利用は追加料金が発生する場合がございます。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "セルフチェックイン機は使えますか？", "answer": "はい、1階ロビーのAIチェックインKioskをご利用いただけます。ご予約名または予約番号、本人確認書類をご準備ください。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "チェックイン前に荷物を預けられますか？", "answer": "はい、当日朝からフロントまたはベルデスクでお預かりいたします。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "チェックイン前に荷物を預けられますか？", "answer": "はい、当日朝からフロントまたはベルデスクでお預かりいたします。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "有人フロントでの手続きも可能ですか？", "answer": "はい、フロントカウンターでもお手続きいただけます。混雑時はKioskのご利用がスムーズです。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "チェックイン前に荷物を預けられますか？", "answer": "はい、当日朝からフロントまたはベルデスクでお預かりいたします。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "チェックイン前に荷物を預けられますか？", "answer": "はい、当日朝からフロントまたはベルデスクでお預かりいたします。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "セルフチェックイン機は使えますか？", "answer": "はい、1階ロビーのAIチェックインKioskをご利用いただけます。ご予約名または予約番号、本人確認書類をご準備ください。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "有人フロントでの手続きも可能ですか？", "answer": "はい、フロントカウンターでもお手続きいただけます。混雑時はKioskのご利用がスムーズです。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "チェックインは何時からできますか？", "answer": "通常のチェックイン開始時刻は15:00でございます。ご到着が早い場合は、お部屋の準備状況によりアーリーチェックインをご案内いたします。 必要に応じてスタッフが個別にご案内いたします。"}, {"code": "", "question": "チェックアウトは何時までですか？", "answer": "通常のチェックアウト時刻は11:00でございます。正午以降のご利用は追加料金が発生する場合がございます。 混雑状況によりご案内が変わる場合がございます。"}, {"code": "", "question": "チェックアウトは何時までですか？", "answer": "通常のチェックアウト時刻は11:00でございます。正午以降のご利用は追加料金が発生する場合がございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。"}, {"code": "", "question": "チェックインは何時からできますか？", "answer": "通常のチェックイン開始時刻は15:00でございます。ご到着が早い場合は、お部屋の準備状況によりアーリーチェックインをご案内いたします。 ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "セルフチェックイン機は使えますか？", "answer": "はい、1階ロビーのAIチェックインKioskをご利用いただけます。ご予約名または予約番号、本人確認書類をご準備ください。 詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "チェックインは何時からできますか？", "answer": "通常のチェックイン開始時刻は15:00でございます。ご到着が早い場合は、お部屋の準備状況によりアーリーチェックインをご案内いたします。"}, {"code": "", "question": "チェックインは何時からできますか", "answer": "通常のチェックイン開始時刻は15:00でございます。ご到着が早い場合は、お部屋の準備状況によりアーリーチェックインをご案内いたします。ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "チェックインは何時からできますか", "answer": "通常のチェックイン開始時刻は15:00でございます。ご到着が早い場合は、お部屋の準備状況によりアーリーチェックインをご案内いたします。詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "チェックアウトは何時までですか？", "answer": "通常のチェックアウト時刻は11:00でございます。正午以降のご利用は追加料金が発生する場合がございます。"}, {"code": "", "question": "チェックアウトは何時までですか", "answer": "通常のチェックアウト時刻は11:00でございます。正午以降のご利用は追加料金が発生する場合がございます。ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "チェックアウトは何時までですか", "answer": "通常のチェックアウト時刻は11:00でございます。正午以降のご利用は追加料金が発生する場合がございます。詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "セルフチェックイン機は使えますか？", "answer": "はい、1階ロビーのAIチェックインKioskをご利用いただけます。ご予約名または予約番号、本人確認書類をご準備ください。"}, {"code": "", "question": "セルフチェックイン機は使えますか", "answer": "はい、1階ロビーのAIチェックインKioskをご利用いただけます。ご予約名または予約番号、本人確認書類をご準備ください。ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "セルフチェックイン機は使えますか", "answer": "はい、1階ロビーのAIチェックインKioskをご利用いただけます。ご予約名または予約番号、本人確認書類をご準備ください。詳細はご到着時にもご案内いたします。"}, {"code": "", "question": "有人フロントでの手続きも可能ですか？", "answer": "はい、フロントカウンターでもお手続きいただけます。混雑時はKioskのご利用がスムーズです。"}, {"code": "", "question": "有人フロントでの手続きも可能ですか", "answer": "はい、フロントカウンターでもお手続きいただけます。混雑時はKioskのご利用がスムーズです。ご不明点がございましたらフロントまでお知らせください。"}, {"code": "", "question": "有人フロントでの手続きも可能ですか", "answer": "はい、フロントカウンターでもお手続きいただけます。混雑時はKioskのご利用がスムーズです。詳細はご到着時にもご案内いたします。"}]};
-
-const baseCats = [];
-const learnCats = [];
-Object.keys(DATA).sort().forEach(cat => {
-    if (cat.startsWith('学習拡張')) learnCats.push(cat);
-    else baseCats.push(cat);
-});
-
-let currentFilter = 'all';
-let currentCat = null;
-let searchTerm = '';
-
-function buildSidebar() {
-    const sb = document.getElementById('sidebar');
-    let html = '';
-
-    const showBase = currentFilter === 'all' || currentFilter === 'base';
-    const showLearn = currentFilter === 'all' || currentFilter === 'learn';
-
-    if (showBase && baseCats.length > 0) {
-        html += '<div class="sidebar-section">ベースカテゴリ</div>';
-        baseCats.forEach(cat => {
-            const count = DATA[cat].length;
-            const active = cat === currentCat ? ' active' : '';
-            const hidden = matchesSearch(cat) ? '' : ' hidden';
-            html += `<div class="cat-item${active}${hidden}" onclick="selectCat('${cat.replace(/'/g, "\\'")}')" data-cat="${cat}">
-                <span class="cat-name">${cat}</span>
-                <span class="cat-count">${count}</span>
-            </div>`;
-        });
-    }
-
-    if (showLearn && learnCats.length > 0) {
-        html += '<div class="sidebar-section">学習拡張FAQセット</div>';
-        learnCats.forEach(cat => {
-            const count = DATA[cat].length;
-            const active = cat === currentCat ? ' active' : '';
-            const hidden = matchesSearch(cat) ? '' : ' hidden';
-            html += `<div class="cat-item${active}${hidden}" onclick="selectCat('${cat.replace(/'/g, "\\'")}')" data-cat="${cat}">
-                <span class="cat-name">${cat}</span>
-                <span class="cat-count">${count}</span>
-            </div>`;
-        });
-    }
-
-    sb.innerHTML = html;
+function filterFaq(){
+  const q=document.getElementById('searchBox').value.toLowerCase().trim();
+  const cards=document.querySelectorAll('.faq-card');
+  let shown=0;
+  cards.forEach(c=>{
+    if(!q){c.classList.remove('hidden');shown++;return}
+    const match=c.dataset.q.includes(q)||c.dataset.a.includes(q);
+    c.classList.toggle('hidden',!match);
+    if(match)shown++;
+  });
+  document.getElementById('matchCount').textContent=q?shown+' 件ヒット':'';
 }
-
-function matchesSearch(cat) {
-    if (!searchTerm) return true;
-    const term = searchTerm.toLowerCase();
-    if (cat.toLowerCase().includes(term)) return true;
-    return DATA[cat].some(faq =>
-        faq.question.toLowerCase().includes(term) ||
-        faq.answer.toLowerCase().includes(term)
-    );
-}
-
-function highlightText(text, term) {
-    if (!term) return text;
-    const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    return text.replace(new RegExp(`(${escaped})`, 'gi'), '<mark>$1</mark>');
-}
-
-function selectCat(cat) {
-    currentCat = cat;
-    buildSidebar();
-    renderFaqs(cat);
-}
-
-function renderFaqs(cat) {
-    const mc = document.getElementById('mainContent');
-const faqs = [{"question": "ご家族連れのお客様におすすめのサービスはありますか？", "answer": "ご家族連れのお客様には、館内案内、周辺情報、貸出備品、レストラン予約などを組み合わせたご提案が可能でございます。", "category": "サービス"}, {"question": "ご家族連れのお客様向けに便利な案内はありますか？", "answer": "ご家族連れのお客様には、用途に応じた館内サービス、周辺アクセス、食事案内をまとめてご案内しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "サービス"}, {"question": "ビジネス利用のお客様におすすめのサービスはありますか？", "answer": "ビジネス利用のお客様には、館内案内、周辺情報、貸出備品、レストラン予約などを組み合わせたご提案が可能でございます。", "category": "サービス"}, {"question": "ビジネス利用のお客様向けに便利な案内はありますか？", "answer": "ビジネス利用のお客様には、用途に応じた館内サービス、周辺アクセス、食事案内をまとめてご案内しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "サービス"}, {"question": "プロジェクターは借りられますか？", "answer": "はい、有料オプションとしてプロジェクター、スクリーン、マイクをご用意しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "サービス"}, {"question": "海外からのお客様向けに便利な案内はありますか？", "answer": "海外からのお客様には、用途に応じた館内サービス、周辺アクセス、食事案内をまとめてご案内しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "サービス"}, {"question": "研修利用の昼食手配はできますか？", "answer": "はい、ご予算に応じてお弁当または宴会場での食事手配が可能でございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "サービス"}, {"question": "記念日利用のお客様向けに便利な案内はありますか？", "answer": "記念日利用のお客様には、用途に応じた館内サービス、周辺アクセス、食事案内をまとめてご案内しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "サービス"}, {"question": "セルフチェックイン機は使えますか", "answer": "はい、1階ロビーのAIチェックインKioskをご利用いただけます。ご予約名または予約番号、本人確認書類をご準備ください。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "チェックイン・チェックアウト", "alt_questions": ["セルフチェックイン機は使えますか？"]}, {"question": "チェックアウトは何時までですか", "answer": "通常のチェックアウト時刻は11:00でございます。正午以降のご利用は追加料金が発生する場合がございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "チェックイン・チェックアウト", "alt_questions": ["チェックアウトは何時までですか？"]}, {"question": "チェックインは何時からできますか", "answer": "通常のチェックイン開始時刻は15:00でございます。ご到着が早い場合は、お部屋の準備状況によりアーリーチェックインをご案内いたします。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "チェックイン・チェックアウト", "alt_questions": ["チェックインは何時からできますか？"]}, {"question": "チェックイン前に荷物を預けられますか？", "answer": "はい、当日朝からフロントまたはベルデスクでお預かりいたします。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "チェックイン・チェックアウト"}, {"question": "有人フロントでの手続きも可能ですか", "answer": "はい、フロントカウンターでもお手続きいただけます。混雑時はKioskのご利用がスムーズです。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "チェックイン・チェックアウト", "alt_questions": ["有人フロントでの手続きも可能ですか？"]}, {"question": "体調が悪いのですが。", "answer": "必要に応じて救急相談窓口や近隣医療機関をご案内いたします。緊急性が高い場合はすぐにスタッフへお知らせください。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "トラブル・緊急対応"}, {"question": "忘れ物をした場合はどうなりますか？", "answer": "発見されたお忘れ物は一定期間保管しております。お心当たりの品がございましたら、宿泊日とお部屋番号を添えてお問い合わせください。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "トラブル・緊急対応"}, {"question": "部屋の設備が故障しています。", "answer": "ご不便をおかけし申し訳ございません。状況を確認のうえ、客室移動または修理対応を手配いたします。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "トラブル・緊急対応", "alt_questions": ["部屋の設備が故障しています。あわせて可能ですか？"]}, {"question": "アレルギー対応は可能ですか？", "answer": "可能な範囲で対応いたします。重篤なアレルギーをお持ちの場合は、事前に詳細をお知らせください。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "一般"}, {"question": "カードキーをなくしました。", "answer": "防犯のため既存キーを無効化し、新しいカードキーを再発行いたします。本人確認にご協力ください。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "一般", "alt_questions": ["カードキーをなくしました。念のためありますか？"]}, {"question": "サウナはありますか？", "answer": "はい、15階大浴場エリアにドライサウナをご用意しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "一般"}, {"question": "パスポートの提示は必要ですか？", "answer": "海外からお越しで日本国内に住所をお持ちでないお客様には、法令に基づきパスポートの確認をお願いしております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "一般"}, {"question": "冷蔵品や冷凍品の預かりはできますか？", "answer": "衛生管理上、お預かりできない品目がございます。事前にフロントへご相談ください。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "一般"}, {"question": "変換プラグは借りられますか？", "answer": "はい、数に限りはございますが、各種変換プラグを無料で貸出しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "一般"}, {"question": "外貨両替はできますか？", "answer": "館内では外貨両替を承っておりませんが、近隣の両替機または銀行をご案内いたします。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "一般"}, {"question": "朝食会場はどこですか？", "answer": "朝食会場は2階『レストランNBS』でございます。時間帯により混雑いたしますので、余裕をもってご利用ください。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "一般"}, {"question": "添い寝は可能ですか？", "answer": "未就学のお子様はベッド1台につき1名まで添い寝無料でご案内しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "一般"}, {"question": "火災報知器が鳴ったらどうすればいいですか", "answer": "館内放送とスタッフの案内に従い、非常口から落ち着いて避難してください。エレベーターは使用しないでください。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "一般", "alt_questions": ["火災報知器が鳴ったらどうすればいいですか？"]}, {"question": "ホテルから荷物を送れますか？", "answer": "はい、国内配送の宅配便を1階ベルデスクで承っております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "予約・宿泊"}, {"question": "長期滞在のお客様向けに便利な案内はありますか？", "answer": "長期滞在のお客様には、用途に応じた館内サービス、周辺アクセス、食事案内をまとめてご案内しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "予約・宿泊"}, {"question": "中国語での案内資料はありますか？", "answer": "中国語版の館内案内や避難案内を順次ご用意しております。必要な場合はスタッフへお申し付けください。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "周辺観光"}, {"question": "日本語での案内資料はありますか？", "answer": "日本語版の館内案内や避難案内を順次ご用意しております。必要な場合はスタッフへお申し付けください。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "周辺観光"}, {"question": "英語での案内資料はありますか？", "answer": "英語版の館内案内や避難案内を順次ご用意しております。必要な場合はスタッフへお申し付けください。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "周辺観光"}, {"question": "英語で対応できますか？", "answer": "はい、日本語・英語でのご案内が可能でございます。時間帯により対応可能スタッフが異なる場合がございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "周辺観光"}, {"question": "韓国語での案内資料はありますか？", "answer": "韓国語版の館内案内や避難案内を順次ご用意しております。必要な場合はスタッフへお申し付けください。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "周辺観光"}, {"question": "キッズルームはありますか？", "answer": "はい、6階にご宿泊者専用キッズルームがございます。保護者同伴でご利用ください。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "客室・設備"}, {"question": "キッズルームは何階ですか？", "answer": "キッズルームは6階にございます。営業時間は9:00から20:00でございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "客室・設備", "alt_questions": ["キッズルームはどこにありますか？"]}, {"question": "クラブフロアキングで利用できるアメニティを教えてください。", "answer": "クラブフロアキングでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "客室・設備"}, {"question": "コネクティングルームで利用できるアメニティを教えてください。", "answer": "コネクティングルームでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "客室・設備"}, {"question": "コネクティングルームの特徴を教えてください。", "answer": "コネクティングルームは快適性と機能性を両立した客室タイプで、用途に応じた設備とアメニティをご利用いただけます。", "category": "客室・設備"}, {"question": "スタンダードシングルで利用できるアメニティを教えてください。", "answer": "スタンダードシングルでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "客室・設備"}, {"question": "スタンダードツインで利用できるアメニティを教えてください。", "answer": "スタンダードツインでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "客室・設備"}, {"question": "スタンダードツインの特徴を教えてください。", "answer": "スタンダードツインは快適性と機能性を両立した客室タイプで、用途に応じた設備とアメニティをご利用いただけます。", "category": "客室・設備"}, {"question": "スーペリアダブルで利用できるアメニティを教えてください。", "answer": "スーペリアダブルでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "客室・設備"}, {"question": "スーペリアダブルの特徴を教えてください。", "answer": "スーペリアダブルは快適性と機能性を両立した客室タイプで、用途に応じた設備とアメニティをご利用いただけます。", "category": "客室・設備"}, {"question": "デラックスツインで利用できるアメニティを教えてください。", "answer": "デラックスツインでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "客室・設備"}, {"question": "ビューバススイートで利用できるアメニティを教えてください。", "answer": "ビューバススイートでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "客室・設備"}, {"question": "ビューバススイートの特徴を教えてください。", "answer": "ビューバススイートは快適性と機能性を両立した客室タイプで、用途に応じた設備とアメニティをご利用いただけます。", "category": "客室・設備"}, {"question": "ファミリースイートで利用できるアメニティを教えてください。", "answer": "ファミリースイートでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "客室・設備"}, {"question": "プレミアキングで利用できるアメニティを教えてください。", "answer": "プレミアキングでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "客室・設備"}, {"question": "ベッドを追加できますか？", "answer": "一部の客室タイプではエキストラベッドの追加が可能でございます。客室タイプと宿泊人数により可否が異なります。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "客室・設備"}, {"question": "ベビーベッドは借りられますか？", "answer": "対象年齢内のお子様向けに無料で貸出しております。台数に限りがあるため事前予約をおすすめいたします。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "客室・設備"}, {"question": "ユニバーサルルームで利用できるアメニティを教えてください。", "answer": "ユニバーサルルームでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "客室・設備"}, {"question": "ルームサービスはありますか？", "answer": "はい、17:00から22:00まで一部メニューにてルームサービスをご利用いただけます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "客室・設備"}, {"question": "加湿空気清浄機はありますか？", "answer": "数に限りはございますが、貸出備品としてご用意しております。フロントまたはKioskのリクエストメニューからお申し付けください。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "客室・設備"}, {"question": "和洋室スイートで利用できるアメニティを教えてください。", "answer": "和洋室スイートでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "客室・設備"}, {"question": "喫煙ルームはありますか？", "answer": "ホテルNBSの客室は全室禁煙でございます。喫煙は1階屋外の喫煙スペースをご利用ください。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "客室・設備"}, {"question": "子ども用アメニティはありますか？", "answer": "はい、歯ブラシ、スリッパ、ボディスポンジなどのお子様向けアメニティをご用意しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "客室・設備"}, {"question": "客室でWi-Fiは使えますか？", "answer": "はい、全客室および館内共用部で無料Wi-Fiをご利用いただけます。SSIDとパスワードは客室内の案内をご確認ください。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "客室・設備"}, {"question": "長期滞在レジデンスで利用できるアメニティを教えてください。", "answer": "長期滞在レジデンスでは、タオル、ナイトウェア、歯ブラシ、ドライヤー、電気ケトルなどの基本設備をご用意しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "客室・設備"}, {"question": "QRコード決済で追加精算できますか？", "answer": "はい、追加のご利用分はQRコード決済でご精算いただけます。決済端末の仕様により一部制限がある場合がございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "支払い・領収書"}, {"question": "どの支払い方法が使えますか", "answer": "現金、主要クレジットカード、交通系IC、各種QRコード決済に対応しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "支払い・領収書", "alt_questions": ["どの支払い方法が使えますか？"]}, {"question": "クレジットカードで追加精算できますか？", "answer": "はい、追加のご利用分はクレジットカードでご精算いただけます。決済端末の仕様により一部制限がある場合がございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "支払い・領収書"}, {"question": "デポジットは必要ですか", "answer": "ご予約内容やお支払い方法により、ご到着時にデポジットをお願いする場合がございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "支払い・領収書", "alt_questions": ["デポジットは必要ですか？", "デポジットは必要ですかについてもありますか？"]}, {"question": "事前決済済みですが追加料金だけ現地で払えますか", "answer": "はい、追加ご利用分のみ現地精算いただけます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "支払い・領収書", "alt_questions": ["事前決済済みですが追加料金だけ現地で払えますか？"]}, {"question": "交通系ICで追加精算できますか？", "answer": "はい、追加のご利用分は交通系ICでご精算いただけます。決済端末の仕様により一部制限がある場合がございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "支払い・領収書"}, {"question": "会社名義の領収書は出せますか", "answer": "はい、宛名・但し書きを指定して発行可能でございます。Kioskでは仮発行、正式発行はフロントにて承ります。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "支払い・領収書", "alt_questions": ["会社名義の領収書は出せますか？"]}, {"question": "法人契約の請求書払いは可能ですか？", "answer": "事前審査のうえ、法人契約のお客様には請求書払いをご案内できる場合がございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "支払い・領収書"}, {"question": "法人請求で追加精算できますか？", "answer": "はい、追加のご利用分は法人請求でご精算いただけます。決済端末の仕様により一部制限がある場合がございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "支払い・領収書"}, {"question": "現金で支払いたいのですが？", "answer": "スタッフに連絡いたしました。チェックイン手続きキャンセルして、右手にありますフロントにお越しください。", "category": "支払い・領収書"}, {"question": "現金で支払えますか？", "answer": "はい、現金でのお支払いに対応しております。ただし一部プランや精算種別では利用条件が異なる場合がございます。", "category": "支払い・領収書"}, {"question": "現金で追加精算できますか？", "answer": "はい、追加のご利用分は現金でご精算いただけます。決済端末の仕様により一部制限がある場合がございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "支払い・領収書"}, {"question": "電子マネーで追加精算できますか？", "answer": "はい、追加のご利用分は電子マネーでご精算いただけます。決済端末の仕様により一部制限がある場合がございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "支払い・領収書"}, {"question": "オールデイダイニング『ラウンジNBS』の営業時間を教えてください。", "answer": "オールデイダイニング『ラウンジNBS』の営業時間は6:00から21:30でございます。イベントや点検により変更となる場合がございます。", "category": "施設案内"}, {"question": "オールデイダイニング『ラウンジNBS』は何階ですか？", "answer": "オールデイダイニング『ラウンジNBS』は3階にございます。営業時間は6:00から21:30でございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "施設案内"}, {"question": "コインランドリーは何階ですか？", "answer": "コインランドリーは7階にございます。営業時間は24時間でございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "施設案内"}, {"question": "コンシェルジュは何階ですか？", "answer": "コンシェルジュは1階にございます。営業時間は7:00から22:00でございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "施設案内", "alt_questions": ["コンシェルジュはどこにありますか？"]}, {"question": "サウナは何階ですか？", "answer": "サウナは15階にございます。営業時間は17:00から24:30でございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "施設案内"}, {"question": "スカイラウンジの営業時間を教えてください。", "answer": "スカイラウンジの営業時間は10:00から22:00でございます。イベントや点検により変更となる場合がございます。", "category": "施設案内"}, {"question": "スカイラウンジは何階ですか？", "answer": "スカイラウンジは16階にございます。営業時間は10:00から22:00でございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "施設案内"}, {"question": "フィットネスジムは24時間ですか？", "answer": "はい、宿泊者専用ジムは24時間ご利用いただけます。安全のため室内シューズの着用をお願いいたします。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "施設案内"}, {"question": "フィットネスジムは何階ですか？", "answer": "フィットネスジムは15階にございます。営業時間は24時間でございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "施設案内"}, {"question": "フロントは何階ですか？", "answer": "フロントは1階にございます。営業時間は24時間対応でございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "施設案内", "alt_questions": ["フロントはどこにありますか？"]}, {"question": "ベルデスクは何階ですか？", "answer": "ベルデスクは1階にございます。営業時間は6:00から23:00でございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "施設案内"}, {"question": "ルーフトップバーの営業時間を教えてください。", "answer": "ルーフトップバーの営業時間は18:00から24:00でございます。イベントや点検により変更となる場合がございます。", "category": "施設案内"}, {"question": "ルーフトップバーは何階ですか？", "answer": "ルーフトップバーは16階にございます。営業時間は18:00から24:00でございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "施設案内"}, {"question": "レストラン『レストランNBS』は何階ですか？", "answer": "レストラン『レストランNBS』は2階にございます。営業時間は6:30から22:00でございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "施設案内", "alt_questions": ["レストラン『レストランNBS』はどこにありますか？"]}, {"question": "会議室はありますか？", "answer": "はい、5階に少人数向け会議室、4階に宴会場をご用意しております。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "施設案内"}, {"question": "会議室エリアは何階ですか？", "answer": "会議室エリアは5階にございます。営業時間は8:00から20:00でございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "施設案内"}, {"question": "大浴場の営業時間は？", "answer": "大浴場は17:00から25:00までご利用いただけます。最終入場は24:30でございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "施設案内"}, {"question": "大浴場の営業時間を教えてください。", "answer": "大浴場の営業時間は17:00から25:00でございます。イベントや点検により変更となる場合がございます。", "category": "施設案内"}, {"question": "大浴場は何階ですか？", "answer": "大浴場は15階にございます。営業時間は17:00から25:00でございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "施設案内", "alt_questions": ["大浴場はどこにありますか？"]}, {"question": "宴会場『NBSホール』の営業時間を教えてください。", "answer": "宴会場『NBSホール』の営業時間は9:00から21:00でございます。イベントや点検により変更となる場合がございます。", "category": "施設案内"}, {"question": "宴会場『NBSホール』は何階ですか？", "answer": "宴会場『NBSホール』は4階にございます。営業時間は9:00から21:00でございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "施設案内"}, {"question": "最上階には何がありますか？", "answer": "最上階には、宿泊者専用の「スカイラウンジ」、「フィットネスジム」と「大浴場」がございます。", "category": "施設案内"}, {"question": "最上階のラウンジは誰でも利用できますか？", "answer": "16階スカイラウンジは対象プランまたはクラブフロア宿泊のお客様がご利用いただけます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "施設案内"}, {"question": "朝食の営業時間を教えてください。", "answer": "朝食は6:30から10:00まで、最終入店は9:30でございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "施設案内"}, {"question": "自動販売機コーナーは何階ですか？", "answer": "自動販売機コーナーは7階にございます。営業時間は24時間でございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "施設案内"}, {"question": "製氷機は何階ですか？", "answer": "製氷機は7階にございます。営業時間は24時間でございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "施設案内"}, {"question": "NBS中央駅へ行くにはどうすればいいですか？", "answer": "NBS中央駅へは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "駐車場・アクセス"}, {"question": "NBS公園駅へ行くにはどうすればいいですか？", "answer": "NBS公園駅へは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "駐車場・アクセス"}, {"question": "お台場へ行くにはどうすればいいですか？", "answer": "お台場へは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "駐車場・アクセス"}, {"question": "デラックスツインは何名まで泊まれますか？", "answer": "デラックスツインの定員は客室仕様により異なります。ご予約画面またはフロントにて最新の定員をご確認ください。", "category": "駐車場・アクセス"}, {"question": "ホテルNBSからNBS中央駅までのアクセスを教えてください。", "answer": "NBS中央駅へは電車・タクシー・バスのいずれでもアクセス可能です。所要時間は時間帯や交通状況により異なります。", "category": "駐車場・アクセス"}, {"question": "ホテルNBSからNBS公園駅までのアクセスを教えてください。", "answer": "NBS公園駅へは電車・タクシー・バスのいずれでもアクセス可能です。所要時間は時間帯や交通状況により異なります。", "category": "駐車場・アクセス"}, {"question": "ホテルNBSからお台場までのアクセスを教えてください。", "answer": "お台場へは電車・タクシー・バスのいずれでもアクセス可能です。所要時間は時間帯や交通状況により異なります。", "category": "駐車場・アクセス"}, {"question": "ユニバーサルルームは何名まで泊まれますか？", "answer": "ユニバーサルルームの定員は客室仕様により異なります。ご予約画面またはフロントにて最新の定員をご確認ください。", "category": "駐車場・アクセス"}, {"question": "最寄り駅からのアクセスを教えてください。", "answer": "最寄り駅はゆりかもめ『NBS駅』で、徒歩約7分でございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "駐車場・アクセス"}, {"question": "有明アリーナへ行くにはどうすればいいですか？", "answer": "有明アリーナへは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "駐車場・アクセス"}, {"question": "東京ビッグサイトへ行くにはどうすればいいですか？", "answer": "東京ビッグサイトへは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "駐車場・アクセス"}, {"question": "空港からホテルまでの行き方は", "answer": "羽田空港からはリムジンバスまたは電車をご利用いただけます。到着時間に応じて最適なルートをご案内いたします。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "駐車場・アクセス", "alt_questions": ["空港からホテルまでの行き方は？"]}, {"question": "羽田空港へ行くにはどうすればいいですか？", "answer": "羽田空港へは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "駐車場・アクセス"}, {"question": "豊洲市場へ行くにはどうすればいいですか？", "answer": "豊洲市場へは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "駐車場・アクセス"}, {"question": "銀座へ行くにはどうすればいいですか？", "answer": "銀座へは公共交通機関またはタクシーをご利用いただけます。フロントで時刻表や乗り場をご案内いたします。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "駐車場・アクセス"}, {"question": "駐車場はありますか", "answer": "はい、ホテル地下および屋外提携駐車場をご利用いただけます。先着順でのご案内となります。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "駐車場・アクセス", "alt_questions": ["駐車場はありますか？"]}, {"question": "駐車料金はいくらですか", "answer": "ご宿泊のお客様は1泊1台あたり2,000円でございます。プランにより無料特典が付く場合がございます。 最新情報は館内案内またはKiosk画面でもご確認いただけます。", "category": "駐車場・アクセス", "alt_questions": ["駐車料金はいくらですか？"]}];
-    if (!faqs) return;
-
-    const term = searchTerm.toLowerCase();
-    let html = `<div class="faq-header">
-        <h2>${cat}</h2>
-        <div class="faq-meta">${faqs.length} 件のFAQ</div>
-    </div>`;
-
-    let visibleCount = 0;
-    faqs.forEach(faq => {
-        const matchQ = !term || faq.question.toLowerCase().includes(term);
-        const matchA = !term || faq.answer.toLowerCase().includes(term);
-        const matchCat = !term || cat.toLowerCase().includes(term);
-        const visible = !term || matchQ || matchA || matchCat;
-        if (visible) visibleCount++;
-
-        const q = highlightText(faq.question, searchTerm);
-        const a = highlightText(faq.answer, searchTerm);
-
-        html += `<div class="faq-card${visible ? '' : ' hidden'}">
-            <div class="faq-code">FAQ #${faq.code}</div>
-            <div class="faq-question">Q: ${q}</div>
-            <div class="faq-answer">A: ${a}</div>
-        </div>`;
-    });
-
-    if (term && visibleCount === 0) {
-        html += '<div class="empty-state"><p>この中に一致するFAQはありません</p></div>';
-    }
-
-    mc.innerHTML = html;
-}
-
-function setFilter(filter) {
-    currentFilter = filter;
-    document.querySelectorAll('.filter-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.filter === filter);
-    });
-    currentCat = null;
-    buildSidebar();
-    document.getElementById('mainContent').innerHTML = '<div class="empty-state"><div class="icon">📋</div><p>左のカテゴリを選択してFAQを表示</p></div>';
-}
-
-document.getElementById('searchBox').addEventListener('input', function(e) {
-    searchTerm = e.target.value.trim();
-    buildSidebar();
-    if (currentCat) renderFaqs(currentCat);
-});
-
-buildSidebar();
 </script>
 </body>
 </html>
